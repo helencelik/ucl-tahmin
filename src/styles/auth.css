@@ -1,0 +1,262 @@
+/* ==========================================================================
+   LOGIN PAGE STYLES
+   Mobil Uyumlu, Sade, Modern, Şampiyonlar Ligi Yıldız Temalı Giriş Ekranı
+   ========================================================================== */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-background-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 82, 212, 0.25) 0%, rgba(0, 242, 254, 0.08) 50%, transparent 70%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(14, 21, 46, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 28px 20px;
+  }
+}
+
+.login-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.starball-badge {
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.login-starball {
+  width: 68px;
+  height: 68px;
+  filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.6));
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.6)); }
+  50% { transform: scale(1.04); filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.85)); }
+}
+
+.login-title {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: #fff;
+  background: linear-gradient(135deg, #ffffff 40%, var(--neon-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.private-league-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 82, 212, 0.15);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: #93c5fd;
+  line-height: 1.4;
+}
+
+.private-league-notice svg {
+  flex-shrink: 0;
+  color: var(--neon-cyan);
+}
+
+.login-alert-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: #fca5a5;
+}
+
+.login-alert-error svg {
+  flex-shrink: 0;
+  color: #ef4444;
+}
+
+/* Form Fields */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+.login-input {
+  width: 100%;
+  background: rgba(5, 8, 20, 0.6);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 12px 14px 12px 42px;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.login-input:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 12px var(--neon-cyan-glow);
+  background: rgba(5, 8, 20, 0.9);
+}
+
+.login-input::placeholder {
+  color: var(--text-dim);
+}
+
+.btn-login-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #0052d4, #00f2fe);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.btn-login-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 242, 254, 0.5);
+}
+
+.btn-login-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Quick Fill Buttons for testing */
+.demo-credentials-helper {
+  padding-top: 14px;
+  border-top: 1px solid var(--border-glass);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.helper-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.quick-fill-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.btn-quick-fill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-quick-fill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.btn-quick-fill.admin:hover {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.btn-quick-fill.user:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
