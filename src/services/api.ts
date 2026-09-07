@@ -2080,11 +2080,19 @@ export async function getMatches(): Promise<Match[]> {
     return DEMO_MATCHES;
   }
 
+  const stadiumMap = new Map<string, string>();
+  DEMO_MATCHES.forEach((d) => {
+    if (d.stadium) {
+      stadiumMap.set(d.id, d.stadium);
+      stadiumMap.set(`${d.home_team}-${d.away_team}`, d.stadium);
+    }
+  });
+
   return data.map((m) => ({
     ...m,
     stage: m.stage || 'league',
     matchweek: m.matchweek || inferMatchweek(m.match_date),
-    stadium: m.stadium || ''
+    stadium: m.stadium || stadiumMap.get(m.id) || stadiumMap.get(`${m.home_team}-${m.away_team}`) || (m.home_team === 'Galatasaray' ? 'RAMS Park' : '')
   }));
 }
 
