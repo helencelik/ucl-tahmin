@@ -1,74 +1,92 @@
 /* ==========================================================================
-   LEADERBOARD PAGE STYLES
-   3D Podyum, Altın/Gümüş/Bronz Sıralaması, Liderlik Tablosu
+   LEADERBOARD PAGE STYLES - REVAMPED PREMIUM DARK THEME
+   3D Podium, KPI Cards, Glowing Rank Cards & Searchable List
    ========================================================================== */
 
 .leaderboard-page {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 }
 
+/* ==========================================================================
+   1. HERO BANNER
+   ========================================================================== */
 .leaderboard-hero {
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   position: relative;
-  padding: 10px 0;
+  padding: 14px 0 6px;
 }
 
 .hero-trophy-glow {
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, rgba(255, 215, 0, 0.08) 45%, transparent 70%);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  animation: pulseGlow 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(0.96); opacity: 0.85; }
+  100% { transform: scale(1.05); opacity: 1; }
 }
 
 .trophy-icon {
   color: var(--accent-gold);
-  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.6));
+  filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.75));
 }
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   letter-spacing: 1px;
-  color: #fff;
+  background: linear-gradient(135deg, #ffffff 30%, #ffd700 85%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 @media (min-width: 640px) {
   .hero-title {
-    font-size: 24px;
+    font-size: 26px;
   }
 }
 
 .hero-subtitle {
   font-size: 13px;
   color: var(--text-muted);
+  max-width: 480px;
+  line-height: 1.5;
 }
 
 .hero-subtitle strong {
   color: var(--accent-gold);
+  font-weight: 700;
 }
 
 .btn-refresh-leaderboard {
-  margin-top: 6px;
+  margin-top: 4px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-full);
-  color: var(--text-muted);
+  color: #cbd5e1;
   font-size: 12px;
   font-weight: 600;
-  padding: 6px 14px;
+  padding: 6px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -77,19 +95,147 @@
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   border-color: var(--neon-cyan);
+  box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
+}
+
+.btn-refresh-leaderboard.spinning svg {
+  animation: spin 0.8s linear infinite;
 }
 
 /* ==========================================================================
-   PODIUM (İLK 3 PODYUMU)
+   2. LEADERBOARD KPI SUMMARY CARDS (3 Mini Kart)
+   ========================================================================== */
+.leaderboard-kpi-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .leaderboard-kpi-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+.lead-kpi-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.lead-kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.lead-kpi-card.gold-border {
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 20px -5px rgba(255, 215, 0, 0.15);
+}
+.lead-kpi-card.gold-border:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 8px 25px -5px rgba(255, 215, 0, 0.25);
+}
+
+.lead-kpi-card.purple-border {
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 4px 20px -5px rgba(168, 85, 247, 0.15);
+}
+.lead-kpi-card.purple-border:hover {
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 8px 25px -5px rgba(168, 85, 247, 0.25);
+}
+
+.lead-kpi-card.cyan-border {
+  border-color: rgba(0, 242, 254, 0.3);
+  box-shadow: 0 4px 20px -5px rgba(0, 242, 254, 0.15);
+}
+.lead-kpi-card.cyan-border:hover {
+  border-color: rgba(0, 242, 254, 0.6);
+  box-shadow: 0 8px 25px -5px rgba(0, 242, 254, 0.25);
+}
+
+.kpi-icon-pill {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-icon-pill.gold {
+  background: rgba(255, 215, 0, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.kpi-icon-pill.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.kpi-icon-pill.cyan {
+  background: rgba(0, 242, 254, 0.15);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+}
+
+.kpi-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.kpi-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.kpi-value-name {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kpi-sub {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   3. 3D GLASSMORPHIC PODIUM (İLK 3)
    ========================================================================== */
 .podium-container {
   display: grid;
-  grid-template-columns: 1fr 1.15fr 1fr;
+  grid-template-columns: 1fr 1.18fr 1fr;
   align-items: flex-end;
-  gap: 10px;
+  gap: 12px;
   margin: 10px auto;
-  max-width: 500px;
+  max-width: 520px;
   width: 100%;
+  padding: 0 4px;
 }
 
 .podium-card {
@@ -102,26 +248,28 @@
 
 .podium-crown.gold {
   color: var(--accent-gold);
-  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
   animation: floatCrown 3s ease-in-out infinite;
 }
 
 @keyframes floatCrown {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  50% { transform: translateY(-5px); }
 }
 
 .podium-medal.silver {
-  color: #cbd5e1;
+  color: #e2e8f0;
+  filter: drop-shadow(0 0 8px rgba(226, 232, 240, 0.4));
 }
 
 .podium-medal.bronze {
-  color: #d97706;
+  color: #f59e0b;
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
 }
 
 .podium-avatar {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -131,26 +279,30 @@
   font-size: 18px;
   color: #fff;
   margin: 6px 0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+  background: rgba(14, 21, 46, 0.9);
 }
 
-.rank-1 .podium-avatar {
-  width: 62px;
-  height: 62px;
-  font-size: 22px;
+.podium-avatar.gold-ring {
+  width: 66px;
+  height: 66px;
+  font-size: 24px;
   background: linear-gradient(135deg, #ffd700, #b45309);
   border: 3px solid #fef08a;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.45);
+  box-shadow: 0 0 24px rgba(255, 215, 0, 0.5), 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
-.rank-2 .podium-avatar {
-  background: linear-gradient(135deg, #94a3b8, #475569);
+.podium-avatar.silver-ring {
+  background: linear-gradient(135deg, #cbd5e1, #475569);
   border: 2px solid #e2e8f0;
+  box-shadow: 0 0 16px rgba(203, 213, 225, 0.35);
 }
 
-.rank-3 .podium-avatar {
-  background: linear-gradient(135deg, #b45309, #78350f);
+.podium-avatar.bronze-ring {
+  background: linear-gradient(135deg, #d97706, #78350f);
   border: 2px solid #fcd34d;
+  box-shadow: 0 0 16px rgba(217, 119, 6, 0.35);
 }
 
 .podium-name {
@@ -161,18 +313,25 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 90px;
+  max-width: 100px;
+}
+
+.podium-name.winner-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fef08a;
 }
 
 .podium-points {
   font-size: 11px;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .podium-points strong {
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 900;
 }
 
 .winner-points {
@@ -180,274 +339,650 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 4px;
 }
 
 .winner-points strong {
-  font-size: 16px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.silver-points strong {
+  color: #e2e8f0;
+}
+
+.bronze-points strong {
+  color: #fcd34d;
+}
+
+.podium-exact-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+
+.podium-exact-badge.gold {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.4);
+  color: var(--accent-gold);
 }
 
 .podium-pedestal {
   width: 100%;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.15);
+  position: relative;
 }
 
 .podium-pedestal.p1 {
-  height: 90px;
-  background: linear-gradient(180deg, rgba(255, 215, 0, 0.3) 0%, rgba(14, 21, 46, 0.9) 100%);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+  height: 98px;
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.35) 0%, rgba(14, 21, 46, 0.95) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-bottom: none;
 }
 
 .podium-pedestal.p2 {
-  height: 65px;
-  background: linear-gradient(180deg, rgba(203, 213, 225, 0.2) 0%, rgba(14, 21, 46, 0.9) 100%);
-  border: 1px solid rgba(203, 213, 225, 0.3);
+  height: 72px;
+  background: linear-gradient(180deg, rgba(203, 213, 225, 0.25) 0%, rgba(14, 21, 46, 0.95) 100%);
+  border: 1px solid rgba(203, 213, 225, 0.35);
+  border-bottom: none;
 }
 
 .podium-pedestal.p3 {
-  height: 48px;
-  background: linear-gradient(180deg, rgba(217, 119, 6, 0.2) 0%, rgba(14, 21, 46, 0.9) 100%);
-  border: 1px solid rgba(217, 119, 6, 0.3);
+  height: 52px;
+  background: linear-gradient(180deg, rgba(217, 119, 6, 0.25) 0%, rgba(14, 21, 46, 0.95) 100%);
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  border-bottom: none;
 }
 
 .pedestal-number {
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: 24px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 26px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.p1 .pedestal-number {
+  font-size: 32px;
+  color: rgba(255, 215, 0, 0.65);
 }
 
 /* ==========================================================================
-   LEADERBOARD TABLE CARD
+   4. ARAMA VE KONTROL BARI
    ========================================================================== */
-.leaderboard-table-card {
+.leaderboard-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: rgba(14, 21, 46, 0.4);
+  border: 1px solid var(--border-glass);
+  padding: 10px 14px;
+  border-radius: var(--radius-lg);
+}
+
+.search-input-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(5, 8, 20, 0.7);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  flex: 1;
+  min-width: 220px;
+  transition: border-color 0.2s ease;
+}
+
+.search-input-box:focus-within {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+}
+
+.search-icon {
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.search-input-field {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: #fff;
+  width: 100%;
+}
+
+.search-input-field::placeholder {
+  color: var(--text-dim);
+}
+
+.search-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.search-clear-btn:hover {
+  color: #fff;
+}
+
+.table-count-indicator {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.table-count-indicator strong {
+  color: var(--neon-cyan);
+}
+
+/* ==========================================================================
+   5. SIRALAMA KARTLARI LİSTESİ (LEADERBOARD CARDS)
+   ========================================================================== */
+.leaderboard-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.no-search-results {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-glass);
+  border-radius: var(--radius-lg);
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.leaderboard-card-row {
   background: var(--bg-card);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: 44px 1fr 100px;
+  align-items: center;
+  gap: 12px;
   box-shadow: var(--shadow-card);
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.table-header-row {
-  display: grid;
-  grid-template-columns: 50px 1fr 100px;
-  padding: 12px 16px;
-  background: rgba(5, 8, 20, 0.7);
-  border-bottom: 1px solid var(--border-glass);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: var(--text-dim);
+@media (min-width: 640px) {
+  .leaderboard-card-row {
+    grid-template-columns: 50px 1fr 130px;
+    padding: 14px 20px;
+    gap: 16px;
+  }
 }
 
-.table-body-rows {
+.leaderboard-card-row:hover {
+  transform: translateX(3px);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* 1. Sıra Özel Altın Vurgusu */
+.leaderboard-card-row.tier-rank-1 {
+  border-color: rgba(255, 215, 0, 0.35);
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, rgba(14, 21, 46, 0.8) 100%);
+  box-shadow: 0 4px 20px -6px rgba(255, 215, 0, 0.2);
+}
+.leaderboard-card-row.tier-rank-1:hover {
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 6px 25px -4px rgba(255, 215, 0, 0.3);
+}
+
+/* 2. Sıra Gümüş */
+.leaderboard-card-row.tier-rank-2 {
+  border-color: rgba(203, 213, 225, 0.3);
+  background: linear-gradient(90deg, rgba(203, 213, 225, 0.06) 0%, rgba(14, 21, 46, 0.8) 100%);
+}
+
+/* 3. Sıra Bronz */
+.leaderboard-card-row.tier-rank-3 {
+  border-color: rgba(217, 119, 6, 0.3);
+  background: linear-gradient(90deg, rgba(217, 119, 6, 0.06) 0%, rgba(14, 21, 46, 0.8) 100%);
+}
+
+/* Aktif Giriş Yapan Kullanıcı (SİZ) Vurgusu */
+.leaderboard-card-row.current-user-card {
+  background: linear-gradient(90deg, rgba(0, 242, 254, 0.12) 0%, rgba(14, 21, 46, 0.85) 100%);
+  border: 1px solid var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+}
+
+/* Sıra Alanı */
+.row-rank-area {
   display: flex;
-  flex-direction: column;
-}
-
-/* Individual Row */
-.leaderboard-row {
-  display: grid;
-  grid-template-columns: 50px 1fr 100px;
   align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-glass);
-  transition: background 0.15s ease;
-}
-
-.leaderboard-row:last-child {
-  border-bottom: none;
-}
-
-.leaderboard-row:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.leaderboard-row.current-user-row {
-  background: rgba(0, 242, 254, 0.08);
-  border-left: 3px solid var(--neon-cyan);
-}
-
-.rank-col {
-  display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 .rank-badge {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .rank-badge.gold {
   background: rgba(255, 215, 0, 0.2);
   color: var(--accent-gold);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.rank-badge.gold .crown-icon {
+  margin-right: -2px;
 }
 
 .rank-badge.silver {
   background: rgba(203, 213, 225, 0.2);
   color: #e2e8f0;
-  border: 1px solid rgba(203, 213, 225, 0.3);
+  border: 1px solid rgba(203, 213, 225, 0.4);
 }
 
 .rank-badge.bronze {
   background: rgba(217, 119, 6, 0.2);
   color: #f59e0b;
-  border: 1px solid rgba(217, 119, 6, 0.3);
+  border: 1px solid rgba(217, 119, 6, 0.4);
 }
 
 .rank-badge.default {
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-dim);
+  border: 1px solid var(--border-glass);
 }
 
-.user-col {
+/* Kullanıcı Alanı */
+.row-user-area {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  overflow: hidden;
 }
 
-.user-avatar-circle {
-  width: 34px;
-  height: 34px;
+.user-avatar-wrap {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, #1e3a8a, #0284c7);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 13px;
+  font-weight: 800;
+  font-size: 15px;
   color: #fff;
   flex-shrink: 0;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
-.name-and-tag {
+.user-avatar-wrap.top-1 {
+  background: linear-gradient(135deg, #ffd700, #b45309);
+  border: 2px solid #fef08a;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+.user-avatar-wrap.top-2 {
+  background: linear-gradient(135deg, #cbd5e1, #475569);
+  border: 2px solid #e2e8f0;
+}
+
+.user-avatar-wrap.top-3 {
+  background: linear-gradient(135deg, #d97706, #78350f);
+  border: 2px solid #fcd34d;
+}
+
+.user-avatar-wrap.current {
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+}
+
+.gold-star-dot {
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  font-size: 11px;
+  color: #ffd700;
+  filter: drop-shadow(0 0 4px #ffd700);
+}
+
+.user-text-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+}
+
+.user-primary-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.user-name-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge-you {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  color: #050814;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+}
+
+.badge-admin {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--warning);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+.user-stats-chips-row {
   display: flex;
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
 }
 
-.user-display-name {
-  font-family: var(--font-heading);
-  font-size: 14px;
-  font-weight: 700;
-  color: #fff;
-}
-
-.you-tag {
-  font-size: 10px;
-  font-weight: 700;
-  background: rgba(0, 242, 254, 0.2);
-  color: var(--neon-cyan);
-  padding: 1px 6px;
-  border-radius: var(--radius-full);
-}
-
-.admin-tag {
-  font-size: 10px;
-  font-weight: 700;
-  background: rgba(245, 158, 11, 0.2);
-  color: var(--warning);
-  padding: 1px 6px;
-  border-radius: var(--radius-full);
-}
-
-.user-sub-stats {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.user-handle-chip {
   font-size: 11px;
   color: var(--text-dim);
+  font-weight: 500;
 }
 
-.exact-score-stat {
+.stat-chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-}
-
-.points-col {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.points-badge-box {
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-  background: rgba(5, 8, 20, 0.6);
-  border: 1px solid var(--border-glass);
-  padding: 4px 10px;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
   border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
 }
 
-.points-val {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 16px;
-  color: var(--neon-cyan);
-}
-
-.rank-1 .points-val {
+.stat-chip.exact {
+  background: rgba(255, 215, 0, 0.12);
+  border-color: rgba(255, 215, 0, 0.35);
   color: var(--accent-gold);
 }
 
-.points-unit {
+.stat-chip.diff {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.3);
+  color: #c084fc;
+}
+
+.stat-chip.result {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: rgba(0, 242, 254, 0.25);
+  color: var(--neon-cyan);
+}
+
+/* Puan Alanı */
+.row-points-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.points-display-box {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.points-big-num {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--neon-cyan);
+  line-height: 1;
+}
+
+.tier-rank-1 .points-big-num {
+  color: var(--accent-gold);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.tier-rank-2 .points-big-num {
+  color: #e2e8f0;
+}
+
+.tier-rank-3 .points-big-num {
+  color: #fcd34d;
+}
+
+.points-label {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-dim);
 }
 
-/* Scoring Rules Footer */
-.scoring-rules-footer-card {
-  background: rgba(14, 21, 46, 0.5);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-md);
-  padding: 16px;
+.points-mini-progress {
+  width: 70px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
 }
 
-.scoring-rules-footer-card h4 {
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+
+.progress-fill.fill-gold {
+  background: linear-gradient(90deg, #b45309, #ffd700);
+}
+
+.progress-fill.fill-silver {
+  background: linear-gradient(90deg, #64748b, #cbd5e1);
+}
+
+.progress-fill.fill-bronze {
+  background: linear-gradient(90deg, #78350f, #f59e0b);
+}
+
+.progress-fill.fill-cyan {
+  background: linear-gradient(90deg, #0284c7, #00f2fe);
+}
+
+/* ==========================================================================
+   6. SCORING RULES FOOTER CARD (4-3-2-0 KURAL REHBERİ)
+   ========================================================================== */
+.scoring-rules-footer-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  margin-top: 10px;
+}
+
+.rules-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rules-trophy-icon {
+  color: var(--accent-gold);
+}
+
+.rules-card-header h4 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.rules-timing-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.rules-timing-icon {
+  color: var(--warning);
+  flex-shrink: 0;
+}
+
+.rules-timing-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fef08a;
+  line-height: 1.4;
+}
+
+.rules-grid-badges {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .rules-grid-badges {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.rule-badge-item {
+  background: rgba(5, 8, 20, 0.6);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.rule-badge-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.badge-icon-area {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge-icon-area.gold {
+  background: rgba(255, 215, 0, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.badge-icon-area.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.badge-icon-area.cyan {
+  background: rgba(0, 242, 254, 0.15);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+}
+
+.badge-icon-area.muted {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-dim);
+  border: 1px solid var(--border-glass);
+}
+
+.badge-text-area {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.badge-title {
   font-family: var(--font-heading);
   font-size: 13px;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 8px;
 }
 
-.scoring-rules-footer-card ul {
-  list-style: none;
+.badge-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.leaderboard-loader,
+.empty-leaderboard {
+  text-align: center;
+  padding: 60px 20px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-dim);
 }
 
-.scoring-rules-footer-card li {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
+.empty-icon {
+  color: var(--text-dim);
+  opacity: 0.5;
 }
-
-.scoring-rules-footer-card li svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.text-gold { color: var(--accent-gold); }
-.text-blue { color: var(--neon-cyan); }
-.text-muted { color: var(--text-dim); }

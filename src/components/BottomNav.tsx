@@ -1,10 +1,10 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Calendar, Trophy, Shield, User as UserIcon } from 'lucide-react';
+import { Home, Calendar, Trophy, Shield } from 'lucide-react';
 
 interface BottomNavProps {
   currentTab: string;
-  onSelectTab: (tab: string) => void;
+  onSelectTab: (tab: 'home' | 'matches' | 'leaderboard' | 'admin') => void;
 }
 
 export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab }) => {
@@ -15,11 +15,19 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab })
   return (
     <nav className="bottom-nav">
       <button
+        className={`bottom-nav-item ${currentTab === 'home' ? 'active' : ''}`}
+        onClick={() => onSelectTab('home')}
+      >
+        <Home size={20} />
+        <span>Ana Ekran</span>
+      </button>
+
+      <button
         className={`bottom-nav-item ${currentTab === 'matches' ? 'active' : ''}`}
         onClick={() => onSelectTab('matches')}
       >
         <Calendar size={20} />
-        <span>Tahminler</span>
+        <span>Tahminlerim</span>
       </button>
 
       <button
@@ -27,24 +35,16 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab })
         onClick={() => onSelectTab('leaderboard')}
       >
         <Trophy size={20} />
-        <span>Liderlik</span>
+        <span>Lider Tablosu</span>
       </button>
 
-      {user.role?.toLowerCase() === 'admin' ? (
+      {user.role?.toLowerCase() === 'admin' && (
         <button
           className={`bottom-nav-item admin-item ${currentTab === 'admin' ? 'active' : ''}`}
           onClick={() => onSelectTab('admin')}
         >
           <Shield size={20} />
           <span>Admin</span>
-        </button>
-      ) : (
-        <button
-          className={`bottom-nav-item ${currentTab === 'profile' ? 'active' : ''}`}
-          onClick={() => onSelectTab('leaderboard')}
-        >
-          <UserIcon size={20} />
-          <span>Profil</span>
         </button>
       )}
     </nav>

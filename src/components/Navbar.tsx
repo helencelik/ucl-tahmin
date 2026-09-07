@@ -1,10 +1,10 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, Trophy, Shield, User as UserIcon, Sparkles } from 'lucide-react';
+import { LogOut, Trophy, Shield, Sparkles, User, Home, Calendar } from 'lucide-react';
 
 interface NavbarProps {
   currentTab: string;
-  onSelectTab: (tab: string) => void;
+  onSelectTab: (tab: 'home' | 'matches' | 'leaderboard' | 'admin') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
@@ -16,7 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
     <header className="navbar">
       <div className="navbar-container">
         {/* Logo & Brand */}
-        <div className="navbar-brand" onClick={() => onSelectTab('matches')}>
+        <div className="navbar-brand" onClick={() => onSelectTab('home')}>
           <div className="brand-logo-glow">
             <img src="/champions-league.svg" alt="UCL Logo" className="brand-logo" />
           </div>
@@ -28,20 +28,28 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
           </div>
         </div>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation Links (3 Ana Ekran) */}
         <nav className="desktop-nav">
+          <button
+            className={`nav-link ${currentTab === 'home' ? 'active' : ''}`}
+            onClick={() => onSelectTab('home')}
+          >
+            <Home size={16} className="nav-icon" />
+            Ana Ekran
+          </button>
           <button
             className={`nav-link ${currentTab === 'matches' ? 'active' : ''}`}
             onClick={() => onSelectTab('matches')}
           >
-            Maçlar & Tahminler
+            <Calendar size={16} className="nav-icon" />
+            Tahminlerim
           </button>
           <button
             className={`nav-link ${currentTab === 'leaderboard' ? 'active' : ''}`}
             onClick={() => onSelectTab('leaderboard')}
           >
             <Trophy size={16} className="nav-icon" />
-            Liderlik Tablosu
+            Lider Tablosu
           </button>
           {isAdmin && (
             <button
@@ -57,24 +65,18 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
         {/* User Info & Actions */}
         {user && (
           <div className="navbar-user-actions">
+            {/* Giriş Yapan Kullanıcının İsmi (public.users tablosundaki name) */}
+            <div className="navbar-user-badge" title="Giriş Yapan Katılımcı">
+              <User size={15} className="user-badge-icon" />
+              <span className="user-display-name-text">{user.name}</span>
+              {isAdmin && <span className="user-admin-tag">Yönetici</span>}
+            </div>
+
             {/* Points Badge */}
             <div className="user-points-pill" title="Toplam Puanınız">
               <Sparkles size={14} className="points-sparkle" />
               <span className="points-number">{user.total_points}</span>
               <span className="points-label">PUAN</span>
-            </div>
-
-            {/* Profile Dropdown / Card */}
-            <div className="user-profile-badge">
-              <div className="user-avatar">
-                {user.name ? user.name.charAt(0).toUpperCase() : <UserIcon size={16} />}
-              </div>
-              <div className="user-text-info">
-                <span className="user-name">{user.name}</span>
-                <span className={`user-role-tag ${isAdmin ? 'admin' : 'user'}`}>
-                  {isAdmin ? 'YÖNETİCİ' : 'KATILIMCI'}
-                </span>
-              </div>
             </div>
 
             {/* Logout Button */}

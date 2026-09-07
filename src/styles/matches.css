@@ -88,10 +88,22 @@
   color: var(--accent-gold);
 }
 
+.rule-chip.purple {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #c084fc;
+}
+
 .rule-chip.blue {
   background: rgba(0, 242, 254, 0.15);
   border: 1px solid rgba(0, 242, 254, 0.4);
   color: var(--neon-cyan);
+}
+
+.rule-chip.zero {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  color: var(--text-dim);
 }
 
 .rule-chip.lock {
@@ -104,6 +116,30 @@
 .chip-score {
   font-family: var(--font-heading);
   font-weight: 800;
+}
+
+.rules-timing-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-top: 6px;
+}
+
+.rules-timing-icon {
+  color: var(--warning);
+  flex-shrink: 0;
+}
+
+.rules-timing-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fef3c7;
+  line-height: 1.4;
+  font-style: italic;
 }
 
 /* Toolbar & Filters */
@@ -538,6 +574,13 @@
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
 }
 
+.points-badge.diff {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #c084fc;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.15);
+}
+
 .points-badge.winner {
   background: rgba(0, 242, 254, 0.15);
   border: 1px solid rgba(0, 242, 254, 0.4);
@@ -623,12 +666,17 @@
   color: #fff;
 }
 
-.pred-user-points.p-3 {
+.pred-user-points.p-4 {
   color: var(--accent-gold);
   font-weight: 800;
 }
 
-.pred-user-points.p-1 {
+.pred-user-points.p-3 {
+  color: #c084fc;
+  font-weight: 700;
+}
+
+.pred-user-points.p-2 {
   color: var(--neon-cyan);
   font-weight: 700;
 }
@@ -674,3 +722,585 @@
 .predictions-meta-footer strong {
   color: var(--neon-cyan);
 }
+
+/* ==========================================================================
+   TURNUVA TURLARI NAVİGASYONU (MOBİL UYUMLU YATAY MENÜ)
+   ========================================================================== */
+.tournament-stages-wrapper {
+  background: rgba(14, 21, 46, 0.7);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.tournament-stages-scroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+  padding: 2px;
+}
+
+.tournament-stages-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.stage-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.stage-tab-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.stage-tab-btn.active {
+  background: linear-gradient(135deg, rgba(0, 82, 212, 0.35) 0%, rgba(0, 242, 254, 0.25) 100%);
+  border-color: rgba(0, 242, 254, 0.4);
+  color: #fff;
+  box-shadow: 0 0 14px rgba(0, 242, 254, 0.2);
+}
+
+.stage-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 6px var(--neon-cyan);
+  display: inline-block;
+}
+
+/* ==========================================================================
+   LİG AŞAMASI HAFTA SEÇİCİSİ (8 HAFTA)
+   ========================================================================== */
+.matchweeks-bar-wrapper {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 2px 0;
+}
+
+.matchweeks-bar-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.matchweeks-scroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px;
+}
+
+.week-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(14, 21, 46, 0.5);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.week-pill-btn:hover {
+  color: #fff;
+  border-color: var(--border-glass-bright);
+}
+
+.week-pill-btn.active {
+  background: rgba(0, 242, 254, 0.15);
+  border-color: rgba(0, 242, 254, 0.45);
+  color: var(--neon-cyan);
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
+}
+
+/* ==========================================================================
+   HAFTALIK GRUPLANDIRILMIŞ MAÇ LİSTESİ
+   ========================================================================== */
+.matchweeks-grouped-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.matchweek-group-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.matchweek-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.matchweek-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.matchweek-header-icon {
+  color: var(--neon-cyan);
+}
+
+.matchweek-header-title {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+.matchweek-header-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-glass);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   TURNUVA TURU PLACEHOLDER KARTI
+   ========================================================================== */
+.stage-placeholder-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 50px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.stage-placeholder-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.stage-placeholder-title {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+}
+
+.stage-placeholder-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 480px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.btn-back-to-league {
+  margin-top: 8px;
+  background: linear-gradient(135deg, #0052d4, #00f2fe);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 10px 22px;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+}
+
+.btn-back-to-league:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+}
+
+/* ==========================================================================
+   MAÇ KARTI DETAYLARI: AUTO-SAVE, TAHMİN, GERÇEK SKOR, STADYUM
+   ========================================================================== */
+.card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.autosave-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.autosave-status.saving {
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  color: var(--neon-cyan);
+}
+
+.autosave-status.saved {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10b981;
+  animation: pulseOnce 0.6s ease;
+}
+
+.autosave-status.error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+@keyframes pulseOnce {
+  0% { transform: scale(0.95); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-dim);
+}
+
+.status-pill.finished {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+
+.status-pill.live {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--warning);
+}
+
+.status-pill.upcoming {
+  background: rgba(0, 242, 254, 0.1);
+  color: var(--neon-cyan);
+}
+
+/* Tahmin Kutusu Başlığı */
+.prediction-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.prediction-box-label {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  background: rgba(0, 242, 254, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 242, 254, 0.2);
+}
+
+/* Gerçek Skor Kartı (Admin Sonucu) */
+.real-score-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.real-score-values {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.real-score-num {
+  color: #fff;
+  min-width: 24px;
+  text-align: center;
+}
+
+.real-score-divider {
+  color: var(--neon-cyan);
+  font-weight: 700;
+}
+
+.center-prediction-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-glass);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  margin-top: 4px;
+}
+
+.center-prediction-badge .pred-prefix {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.center-prediction-badge strong {
+  color: #fff;
+  font-weight: 800;
+}
+
+/* Biten Maçta Puan Rozeti Alanı */
+.finished-points-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: rgba(5, 8, 20, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.points-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sol Altta Tarih/Saat, Sağ Altta Stadyum Bilgisi */
+.match-card-meta-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(5, 8, 20, 0.45);
+  border-top: 1px solid var(--border-glass);
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.meta-item-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.meta-item-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #cbd5e1;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.meta-icon {
+  color: var(--neon-cyan);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   MANUEL "TAHMİNİ KAYDET" BUTONU VE BİLDİRİM ÇUBUĞU
+   ========================================================================== */
+.match-save-action-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px 12px;
+  background: rgba(5, 8, 20, 0.35);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.btn-save-prediction {
+  width: 100%;
+  max-width: 250px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  border: none;
+}
+
+/* Skor değiştiğinde veya ilk girişte parlak neon vurgusu */
+.btn-save-prediction.active-glow {
+  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  color: #050814;
+  box-shadow: 0 4px 18px rgba(0, 242, 254, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.btn-save-prediction.active-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 242, 254, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  filter: brightness(1.05);
+}
+
+.btn-save-prediction.active-glow:active {
+  transform: translateY(0);
+}
+
+/* Mevcut skor kayıtlı ve değişmemişse şık sakin durum */
+.btn-save-prediction.synced {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+}
+
+.btn-save-prediction.synced:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 242, 254, 0.4);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Kayıt esnasında */
+.btn-save-prediction.saving {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: wait;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Başarıyla kaydedildiğinde (Yeşil zümrüt tebrik parıltısı) */
+.btn-save-prediction.saved {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.45);
+  animation: savePulse 0.4s ease;
+}
+
+@keyframes savePulse {
+  0% { transform: scale(0.96); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* Kayıt geri bildirim toast rozeti */
+.save-feedback-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  animation: toastFadeUp 0.25s ease;
+}
+
+.save-feedback-toast.success {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.save-feedback-toast.error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+@keyframes toastFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header alanındaki kayıtlı tahmin rozeti */
+.saved-indicator-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.2px;
+}
+
+/* Kilitli Maç Uyarısı */
+.match-locked-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  margin: 4px 14px 10px;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+}
+

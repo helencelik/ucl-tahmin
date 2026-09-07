@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Match, Prediction } from '../types';
-import { Clock, CheckCircle2, AlertCircle, Award, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  Calendar,
+  CheckCircle2,
+  AlertCircle,
+  Award,
+  Sparkles,
+  Target,
+  ChevronDown,
+  ChevronUp,
+  MapPin,
+  RefreshCw,
+  Save,
+  Lock,
+  Check
+} from 'lucide-react';
 import { getMatchPredictions } from '../services/api';
 
 interface MatchCardProps {
@@ -16,13 +30,21 @@ export const MatchCard: React.FC<MatchCardProps> = ({
 }) => {
   const [homeScore, setHomeScore] = useState<number>(userPrediction?.predicted_home_score ?? 0);
   const [awayScore, setAwayScore] = useState<number>(userPrediction?.predicted_away_score ?? 0);
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
-  const [saveError, setSaveError] = useState('');
+  
+  // Kayıt durumu: 'idle' | 'saving' | 'saved' | 'error'
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [saveFeedbackMsg, setSaveFeedbackMsg] = useState('');
+  
   const [showAllPredictions, setShowAllPredictions] = useState(false);
   const [allPredictions, setAllPredictions] = useState<Prediction[]>([]);
   const [loadingPredictions, setLoadingPredictions] = useState(false);
 
+  const matchDate = new Date(match.match_date);
+  const isPast = matchDate.getTime() <= Date.now();
+  const isFinished = match.status === 'finished';
+  const isLocked = isPast || isFinished;
+
+  // Dışarıdan gelen tahmin değiştiğinde senkronize et
   useEffect(() => {
     if (userPrediction) {
       setHomeScore(userPrediction.predicted_home_score);
@@ -30,25 +52,36 @@ export const MatchCard: React.FC<MatchCardProps> = ({
     }
   }, [userPrediction]);
 
-  const matchDate = new Date(match.match_date);
-  const isPast = matchDate.getTime() <= Date.now();
-  const isFinished = match.status === 'finished';
-  const isLocked = isPast || isFinished;
+  // Skorlarda değişiklik var mı kontrolü
+  const hasExisting = userPrediction !== undefined && userPrediction !== null;
+  const isScoreChanged = !hasExisting ||
+    userPrediction.predicted_home_score !== homeScore ||
+    userPrediction.predicted_away_score !== awayScore;
 
-  const handleSave = async () => {
-    if (isLocked || isSaving) return;
-    setIsSaving(true);
-    setSaveError('');
+  // Manuel "Tahmini Kaydet" Butonu Tetikleyicisi
+  const handleSavePredictionClick = async () => {
+    if (isLocked) return;
+
+    setSaveStatus('saving');
+    setSaveFeedbackMsg('');
+
     try {
       await onSavePrediction(match.id, homeScore, awayScore);
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
+      setSaveStatus('saved');
+      setSaveFeedbackMsg('Tahmin başarıyla kaydedildi!');
+
+      // 3 saniye sonra 'saved' durumunu normale çevir
+      setTimeout(() => {
+        setSaveStatus('idle');
+        setSaveFeedbackMsg('');
+      }, 3000);
     } catch (err: any) {
-      console.error(err);
-      setSaveError(err?.message || 'Tahmin kaydedilemedi. Lütfen tekrar deneyiniz.');
-      setTimeout(() => setSaveError(''), 4000);
-    } finally {
-      setIsSaving(false);
+      console.error('Tahmin kayıt hatası:', err);
+      setSaveStatus('error');
+      setSaveFeedbackMsg(err?.message || 'Tahmin kaydedilemedi. Lütfen tekrar deneyin.');
+      setTimeout(() => {
+        setSaveStatus('idle');
+      }, 4000);
     }
   };
 
@@ -75,16 +108,26 @@ export const MatchCard: React.FC<MatchCardProps> = ({
 
   return (
     <div className={`match-card ${isFinished ? 'finished' : isPast ? 'live-locked' : 'upcoming'}`}>
-      {/* Header Info */}
+      {/* 1. Header Info (Aşama, Hafta ve Durum rozeti) */}
       <div className="match-card-header">
-        <span className="match-stage-badge">UEFA Şampiyonlar Ligi</span>
-        <div className="match-time-badge">
-          <Clock size={13} />
-          <span>{isFinished ? 'Bitti' : `${formattedDate}, ${formattedTime}`}</span>
+        <span className="match-stage-badge">
+          {match.stage === 'league' ? 'Lig Aşaması' : 'UEFA Şampiyonlar Ligi'}
+          {match.matchweek ? ` • ${match.matchweek}. Hafta` : ''}
+        </span>
+
+        <div className="card-header-right">
+          {hasExisting && !isFinished && (
+            <span className="saved-indicator-badge" title="Bu maça kayıtlı tahmininiz var">
+              <Check size={12} /> Kayıtlı: {userPrediction?.predicted_home_score} - {userPrediction?.predicted_away_score}
+            </span>
+          )}
+          <span className={`status-pill ${isFinished ? 'finished' : isPast ? 'live' : 'upcoming'}`}>
+            {isFinished ? 'Bitti' : isPast ? 'Canlı / Kilitli' : 'Bekliyor'}
+          </span>
         </div>
       </div>
 
-      {/* Teams and Scores Arena */}
+      {/* 2. Teams and Center Scores Arena */}
       <div className="match-teams-grid">
         {/* Home Team */}
         <div className="team-column home">
@@ -106,20 +149,35 @@ export const MatchCard: React.FC<MatchCardProps> = ({
           <span className="team-name">{match.home_team}</span>
         </div>
 
-        {/* Center Arena: Score Inputs or Real Score */}
+        {/* Center Arena: Tahmin Giriş Alanı VEYA Gerçek Maç Skoru */}
         <div className="match-center-arena">
           {isFinished ? (
             <div className="real-score-board">
-              <span className="real-score">{match.real_home_score ?? 0}</span>
-              <span className="score-divider">-</span>
-              <span className="real-score">{match.real_away_score ?? 0}</span>
-              <span className="score-label">Gerçek Skor</span>
+              <span className="score-label">Maç Sonucu</span>
+              <div className="real-score-values">
+                <span className="real-score-num">{match.real_home_score ?? 0}</span>
+                <span className="real-score-divider">-</span>
+                <span className="real-score-num">{match.real_away_score ?? 0}</span>
+              </div>
+              <div className="center-prediction-badge">
+                <span className="pred-prefix">Tahmin:</span>
+                <strong>
+                  {userPrediction
+                    ? `${userPrediction.predicted_home_score} - ${userPrediction.predicted_away_score}`
+                    : 'Girilmedi'}
+                </strong>
+              </div>
             </div>
           ) : (
             <div className="prediction-inputs-box">
+              <div className="prediction-box-header">
+                <span className="prediction-box-label">Tahmininiz</span>
+              </div>
+
               {isLocked ? (
                 <div className="locked-badge">
-                  <span>Kilitlendi</span>
+                  <Lock size={13} />
+                  <span>Kilitlendi: {homeScore} - {awayScore}</span>
                 </div>
               ) : (
                 <div className="score-inputs-row">
@@ -130,6 +188,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                       className="counter-btn"
                       onClick={() => setHomeScore(Math.max(0, homeScore - 1))}
                       disabled={isLocked || homeScore <= 0}
+                      aria-label="Ev Sahibi Skoru Azalt"
                     >
                       -
                     </button>
@@ -139,14 +198,19 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                       max="20"
                       className="score-input"
                       value={homeScore}
-                      onChange={(e) => setHomeScore(Math.max(0, parseInt(e.target.value) || 0))}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value);
+                        setHomeScore(isNaN(val) ? 0 : Math.max(0, Math.min(20, val)));
+                      }}
                       disabled={isLocked}
+                      aria-label="Ev Sahibi Skor Tahmini"
                     />
                     <button
                       type="button"
                       className="counter-btn"
-                      onClick={() => setHomeScore(homeScore + 1)}
+                      onClick={() => setHomeScore(Math.min(20, homeScore + 1))}
                       disabled={isLocked}
+                      aria-label="Ev Sahibi Skoru Artır"
                     >
                       +
                     </button>
@@ -161,6 +225,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                       className="counter-btn"
                       onClick={() => setAwayScore(Math.max(0, awayScore - 1))}
                       disabled={isLocked || awayScore <= 0}
+                      aria-label="Deplasman Skoru Azalt"
                     >
                       -
                     </button>
@@ -170,14 +235,19 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                       max="20"
                       className="score-input"
                       value={awayScore}
-                      onChange={(e) => setAwayScore(Math.max(0, parseInt(e.target.value) || 0))}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value);
+                        setAwayScore(isNaN(val) ? 0 : Math.max(0, Math.min(20, val)));
+                      }}
                       disabled={isLocked}
+                      aria-label="Deplasman Skor Tahmini"
                     />
                     <button
                       type="button"
                       className="counter-btn"
-                      onClick={() => setAwayScore(awayScore + 1)}
+                      onClick={() => setAwayScore(Math.min(20, awayScore + 1))}
                       disabled={isLocked}
+                      aria-label="Deplasman Skoru Artır"
                     >
                       +
                     </button>
@@ -209,120 +279,152 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         </div>
       </div>
 
-      {/* Footer / Status / Actions */}
-      <div className="match-card-footer">
-        {isFinished ? (
-          <div className="finished-prediction-status">
-            {userPrediction ? (
-              <div className="prediction-summary-row">
-                <span className="your-pred-tag">
-                  Tahmininiz: <strong>{userPrediction.predicted_home_score} - {userPrediction.predicted_away_score}</strong>
-                </span>
-
-                {userPrediction.points_earned === 3 && (
-                  <span className="points-badge exact" title="Tam İsabet!">
-                    <Award size={14} /> +3 PUAN (Tam Skor)
-                  </span>
-                )}
-                {userPrediction.points_earned === 1 && (
-                  <span className="points-badge winner" title="Kazananı Doğru Bildiniz">
-                    <Sparkles size={14} /> +1 PUAN (Doğru Sonuç)
-                  </span>
-                )}
-                {userPrediction.points_earned === 0 && (
-                  <span className="points-badge zero">
-                    0 Puan
-                  </span>
-                )}
-              </div>
+      {/* 3. ŞIK VE NET "TAHMİNİ KAYDET" BUTONU VE BİLDİRİM ALANI */}
+      {!isFinished && !isLocked && (
+        <div className="match-save-action-bar">
+          <button
+            type="button"
+            className={`btn-save-prediction ${
+              saveStatus === 'saved'
+                ? 'saved'
+                : saveStatus === 'saving'
+                ? 'saving'
+                : isScoreChanged
+                ? 'active-glow'
+                : 'synced'
+            }`}
+            onClick={handleSavePredictionClick}
+            disabled={saveStatus === 'saving'}
+            title={hasExisting ? 'Mevcut tahmini güncelle' : 'Skor tahminini kaydet'}
+          >
+            {saveStatus === 'saving' ? (
+              <>
+                <RefreshCw size={15} className="spinning" />
+                <span>Kaydediliyor...</span>
+              </>
+            ) : saveStatus === 'saved' ? (
+              <>
+                <CheckCircle2 size={16} />
+                <span>Tahmin Kaydedildi!</span>
+              </>
             ) : (
-              <span className="no-prediction-text">
-                <AlertCircle size={14} /> Bu maç için tahmin girmediniz
-              </span>
+              <>
+                <Save size={15} />
+                <span>
+                  {hasExisting
+                    ? isScoreChanged
+                      ? 'Tahmini Güncelle'
+                      : 'Tahmin Kayıtlı (Yeniden Kaydet)'
+                    : 'Tahmini Kaydet'}
+                </span>
+              </>
             )}
-          </div>
-        ) : isPast ? (
-          <div className="match-locked-notice">
-            <AlertCircle size={14} /> Maç saati geçtiği için tahmin kilitlenmiştir.
-            {userPrediction && (
-              <span className="locked-pred-info">
-                (Tahmininiz: {userPrediction.predicted_home_score} - {userPrediction.predicted_away_score})
-              </span>
-            )}
-          </div>
-        ) : (
-          <div className="save-action-row">
-            {saveError && (
-              <span className="save-error-hint" style={{ color: '#ef4444', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <AlertCircle size={14} /> {saveError}
-              </span>
-            )}
-            {userPrediction && !saveError && (
-              <span className="saved-info">
-                Kayıtlı Tahmin: <strong>{userPrediction.predicted_home_score} - {userPrediction.predicted_away_score}</strong>
-              </span>
-            )}
-            <button
-              type="button"
-              className={`btn-save-prediction ${saveSuccess ? 'success' : ''}`}
-              onClick={handleSave}
-              disabled={isSaving || isLocked}
-            >
-              {isSaving ? (
-                'Kaydediliyor...'
-              ) : saveSuccess ? (
-                <>
-                  <CheckCircle2 size={16} /> Kaydedildi!
-                </>
-              ) : userPrediction ? (
-                'Tahmini Güncelle'
-              ) : (
-                'Tahmini Kaydet'
+          </button>
+
+          {/* Toast / Bildirim Rozeti */}
+          {saveFeedbackMsg && (
+            <div className={`save-feedback-toast ${saveStatus === 'saved' ? 'success' : 'error'}`}>
+              {saveStatus === 'saved' ? <CheckCircle2 size={13} /> : <AlertCircle size={13} />}
+              <span>{saveFeedbackMsg}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Kilitli Maç Uyarısı */}
+      {!isFinished && isLocked && (
+        <div className="match-locked-notice">
+          <Lock size={14} />
+          <span>Bu maçın başlama saati geçtiği için tahmin girişi kapanmıştır.</span>
+        </div>
+      )}
+
+      {/* 4. Biten Maçta Kazanılan Puan Rozeti */}
+      {isFinished && (
+        <div className="finished-points-banner">
+          {userPrediction ? (
+            <div className="points-status-row">
+              {userPrediction.points_earned === 4 && (
+                <span className="points-badge exact" title="Tam İsabet! Tam Skor Bildimi">
+                  <Award size={15} /> +4 PUAN (Tam Skor)
+                </span>
               )}
-            </button>
-          </div>
-        )}
+              {userPrediction.points_earned === 3 && (
+                <span className="points-badge diff" title="Gol Farkını Doğru Bildiniz">
+                  <Target size={15} /> +3 PUAN (Gol Farkı)
+                </span>
+              )}
+              {userPrediction.points_earned === 2 && (
+                <span className="points-badge winner" title="Kazananı / Beraberliği Doğru Bildiniz">
+                  <Sparkles size={15} /> +2 PUAN (Doğru Sonuç)
+                </span>
+              )}
+              {userPrediction.points_earned === 0 && (
+                <span className="points-badge zero" title="Puan Alamadınız">
+                  0 Puan (Yanlış Tahmin)
+                </span>
+              )}
+            </div>
+          ) : (
+            <span className="no-prediction-text">
+              <AlertCircle size={14} /> Bu maç için tahmin girmediniz (0 Puan)
+            </span>
+          )}
+        </div>
+      )}
 
-        {/* Biten veya kilitli maçta diğer katılımcıların tahminlerini açıp kapama */}
-        {(isFinished || isPast) && (
-          <div className="all-predictions-accordion">
-            <button
-              type="button"
-              className="btn-toggle-accordion"
-              onClick={handleToggleAllPredictions}
-            >
-              <span>Diğer Katılımcıların Tahminleri</span>
-              {showAllPredictions ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
+      {/* 5. Sol Altta Tarih/Saat, Sağ Altta Stadyum Bilgisi */}
+      <div className="match-card-meta-bottom">
+        <div className="meta-item-left" title="Maç Tarihi ve Saati (İstanbul Saati)">
+          <Calendar size={13} className="meta-icon" />
+          <span>{formattedDate}, {formattedTime}</span>
+        </div>
 
-            {showAllPredictions && (
-              <div className="accordion-content">
-                {loadingPredictions ? (
-                  <div className="mini-loader">Yükleniyor...</div>
-                ) : allPredictions.length === 0 ? (
-                  <div className="no-data-hint">Henüz tahmin kaydı yok veya demo modundasınız.</div>
-                ) : (
-                  <div className="preds-mini-list">
-                    {allPredictions.map((p) => (
-                      <div key={p.id} className="pred-mini-item">
-                        <span className="pred-user-name">{p.user?.name || 'Katılımcı'}</span>
-                        <span className="pred-user-score">
-                          {p.predicted_home_score} - {p.predicted_away_score}
-                        </span>
-                        {isFinished && (
-                          <span className={`pred-user-points p-${p.points_earned}`}>
-                            +{p.points_earned}p
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+        <div className="meta-item-right" title="Maçın Oynandığı Stadyum">
+          <MapPin size={13} className="meta-icon" />
+          <span>{match.stadium || 'UEFA Stadyumu'}</span>
+        </div>
       </div>
+
+      {/* 6. Biten veya kilitli maçta diğer katılımcıların tahminlerini açıp kapama */}
+      {(isFinished || isPast) && (
+        <div className="all-predictions-accordion">
+          <button
+            type="button"
+            className="btn-toggle-accordion"
+            onClick={handleToggleAllPredictions}
+          >
+            <span>Diğer Katılımcıların Tahminleri</span>
+            {showAllPredictions ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+          </button>
+
+          {showAllPredictions && (
+            <div className="accordion-content">
+              {loadingPredictions ? (
+                <div className="mini-loader">Yükleniyor...</div>
+              ) : allPredictions.length === 0 ? (
+                <div className="no-data-hint">Henüz tahmin kaydı yok veya demo modundasınız.</div>
+              ) : (
+                <div className="preds-mini-list">
+                  {allPredictions.map((p) => (
+                    <div key={p.id} className="pred-mini-item">
+                      <span className="pred-user-name">{p.user?.name || 'Katılımcı'}</span>
+                      <span className="pred-user-score">
+                        {p.predicted_home_score} - {p.predicted_away_score}
+                      </span>
+                      {isFinished && (
+                        <span className={`pred-user-points p-${p.points_earned}`}>
+                          {p.points_earned > 0 ? `+${p.points_earned}p` : '0p'}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

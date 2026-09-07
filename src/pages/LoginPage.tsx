@@ -1,49 +1,57 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Mail, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Lock, User, AlertCircle, ArrowRight } from 'lucide-react';
 
 interface LoginPageProps {
-  onSuccessLogin: () => void;
+  onSuccessLogin: (role?: string) => void;
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onSuccessLogin }) => {
   const { login, isDemo } = useAuth();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
-      setErrorMsg('Lütfen e-posta ve şifrenizi giriniz.');
+    setErrorMsg('');
+
+    const cleanUsername = username.trim();
+
+    if (!cleanUsername) {
+      setErrorMsg('Lütfen kullanıcı adınızı giriniz.');
+      return;
+    }
+
+    if (!password) {
+      setErrorMsg('Lütfen şifrenizi giriniz.');
       return;
     }
 
     setIsLoading(true);
-    setErrorMsg('');
 
     try {
-      const res = await login(email, password);
+      const res = await login(cleanUsername, password);
       if (res.success) {
-        onSuccessLogin();
+        onSuccessLogin(cleanUsername === 'admin' ? 'admin' : 'user');
       } else {
-        setErrorMsg(res.error || 'Giriş yapılamadı. Bilgilerinizi kontrol ediniz.');
+        setErrorMsg(res.error || 'Giriş yapılamadı. Kullanıcı adı veya şifrenizi kontrol ediniz.');
       }
     } catch (err: any) {
-      setErrorMsg(err?.message || 'Giriş sırasında bir hata oluştu.');
+      setErrorMsg(err?.message || 'Bir hata oluştu. Lütfen tekrar deneyiniz.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Demo hızlı doldurma
-  const fillDemoCredentials = (role: 'admin' | 'user') => {
-    if (role === 'admin') {
-      setEmail('admin@ucl.com');
+  // Demo hızlı test doldurma
+  const fillDemoCredentials = (userKey: string) => {
+    if (userKey === 'admin') {
+      setUsername('admin');
       setPassword('admin1234');
     } else {
-      setEmail('user1@ucl.com');
+      setUsername(userKey);
       setPassword('user1234');
     }
     setErrorMsg('');
@@ -60,13 +68,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccessLogin }) => {
             <img src="/champions-league.svg" alt="UEFA Champions League" className="login-starball" />
           </div>
           <h1 className="login-title">CHAMPIONS LEAGUE</h1>
-          <p className="login-subtitle">Skor Tahmin Ligi Giriş Ekranı</p>
-        </div>
-
-        {/* Info Pill */}
-        <div className="private-league-notice">
-          <ShieldCheck size={16} />
-          <span>Bu lig özel bir davet ligidir. Dışarıdan yeni kayıt kabul edilmemektedir.</span>
+          <p className="login-subtitle">Skor Tahmin Ligi Giriş</p>
         </div>
 
         {/* Error Alert */}
@@ -79,22 +81,24 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccessLogin }) => {
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="login-form">
+          {/* Username Field */}
           <div className="login-field-group">
-            <label className="field-label">E-Posta Adresi</label>
+            <label className="field-label">Kullanıcı Adı</label>
             <div className="input-wrapper">
-              <Mail size={18} className="input-icon" />
+              <User size={18} className="input-icon" />
               <input
-                type="email"
+                type="text"
                 className="login-input"
-                placeholder="ornek@ucl.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
+                placeholder="Kullanıcı Adı"
+                value={username}
+                onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, ''))}
+                autoComplete="username"
                 required
               />
             </div>
           </div>
 
+          {/* Password Field */}
           <div className="login-field-group">
             <label className="field-label">Şifre</label>
             <div className="input-wrapper">
@@ -123,24 +127,38 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccessLogin }) => {
           </button>
         </form>
 
-        {/* Demo Fast Logins (when in demo or testing) */}
+        {/* Demo Fast Logins (Sadece demo modunda görünür) */}
         {isDemo && (
           <div className="demo-credentials-helper">
-            <span className="helper-label">Hızlı Test Girişi:</span>
+            <span className="helper-label">Hızlı Giriş:</span>
             <div className="quick-fill-buttons">
               <button
                 type="button"
                 className="btn-quick-fill admin"
                 onClick={() => fillDemoCredentials('admin')}
               >
-                Admin Hesabı
+                Admin
               </button>
               <button
                 type="button"
                 className="btn-quick-fill user"
-                onClick={() => fillDemoCredentials('user')}
+                onClick={() => fillDemoCredentials('abdullah')}
               >
-                Kullanıcı Hesabı
+                Abdullah
+              </button>
+              <button
+                type="button"
+                className="btn-quick-fill user"
+                onClick={() => fillDemoCredentials('enes')}
+              >
+                Enes
+              </button>
+              <button
+                type="button"
+                className="btn-quick-fill user"
+                onClick={() => fillDemoCredentials('onur')}
+              >
+                Onur
               </button>
             </div>
           </div>

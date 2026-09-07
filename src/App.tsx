@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
+import { AdminNavbar } from './components/AdminNavbar';
 import { BottomNav } from './components/BottomNav';
-import { ProtectedRoute } from './components/ProtectedRoute';
 import { LoginPage } from './pages/LoginPage';
+import { HomePage } from './pages/HomePage';
 import { PredictionsPage } from './pages/PredictionsPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { AdminPage } from './pages/AdminPage';
@@ -11,26 +12,37 @@ import { AdminPage } from './pages/AdminPage';
 // Import CSS
 import './styles/index.css';
 import './styles/auth.css';
+import './styles/home.css';
 import './styles/matches.css';
 import './styles/leaderboard.css';
 import './styles/admin.css';
 
+export type ActiveTab = 'home' | 'matches' | 'leaderboard' | 'admin';
+
 const MainApp: React.FC = () => {
   const { user, loading } = useAuth();
-  const [currentTab, setCurrentTab] = useState<'matches' | 'leaderboard' | 'admin'>('matches');
+  const [currentTab, setCurrentTab] = useState<ActiveTab>('home');
+
+  // Rol kontrolü: Admin rolü, kullanıcı adı 'admin' veya admin e-postası
+  const isAdmin = Boolean(
+    user && (
+      user.role === 'admin' ||
+      user.username?.toLowerCase() === 'admin' ||
+      user.email?.toLowerCase().startsWith('admin@') ||
+      user.name?.toLowerCase().includes('yönetici')
+    )
+  );
 
   // Tarayıcı URL yönlendirmesini senkronize etme (Vercel & SPA uyumlu)
   useEffect(() => {
     const syncFromPath = () => {
       const path = window.location.pathname.toLowerCase();
-      if (path === '/admin') {
-        setCurrentTab('admin');
-      } else if (path === '/liderlik') {
+      if (path === '/lider-tablosu' || path === '/liderlik') {
         setCurrentTab('leaderboard');
-      } else if (path === '/tahminler' || path === '/') {
+      } else if (path === '/tahminlerim' || path === '/tahminler') {
         setCurrentTab('matches');
       } else {
-        setCurrentTab('matches');
+        setCurrentTab('home');
       }
     };
 
@@ -39,17 +51,20 @@ const MainApp: React.FC = () => {
     return () => window.removeEventListener('popstate', syncFromPath);
   }, []);
 
-  const handleSelectTab = (tab: string) => {
-    const validTab = tab as 'matches' | 'leaderboard' | 'admin';
-    setCurrentTab(validTab);
+  const handleSelectTab = (tab: ActiveTab) => {
+    setCurrentTab(tab);
 
-    // URL güncelleme (/tahminler, /liderlik, /admin)
-    let targetPath = '/tahminler';
-    if (validTab === 'admin') targetPath = '/admin';
-    else if (validTab === 'leaderboard') targetPath = '/liderlik';
-    else targetPath = '/tahminler';
+    let targetPath = '/';
+    if (tab === 'admin') targetPath = '/admin';
+    else if (tab === 'leaderboard') targetPath = '/lider-tablosu';
+    else if (tab === 'matches') targetPath = '/tahminlerim';
+    else targetPath = '/';
 
     window.history.pushState(null, '', targetPath);
+  };
+
+  const handleLoginSuccess = () => {
+    handleSelectTab('home');
   };
 
   if (loading) {
@@ -65,29 +80,38 @@ const MainApp: React.FC = () => {
 
   // Kullanıcı giriş yapmamışsa sadece /login ekranı gösterilir
   if (!user) {
-    return <LoginPage onSuccessLogin={() => handleSelectTab('matches')} />;
+    return <LoginPage onSuccessLogin={handleLoginSuccess} />;
   }
 
+  // EĞER KULLANICI ADMİN İSE:
+  // Tamamen yöneticiye özel tasarlanmış Ayrı Admin Paneli açılır (Normal kullanıcı ekranına geçiş yoktur)
+  if (isAdmin) {
+    return (
+      <div className="app-layout admin-mode-layout">
+        {/* Özel Admin Üst Menüsü */}
+        <AdminNavbar />
+
+        {/* Özel Admin İçeriği (Hafta hafta maç listesi, skor girişleri, otomatik puanlama) */}
+        <main className="main-content admin-main-content">
+          <AdminPage />
+        </main>
+      </div>
+    );
+  }
+
+  // NORMAL KATILIMCILAR İÇİN 3 ANA EKRAN
   return (
     <div className="app-layout">
-      {/* Üst Menü */}
+      {/* Üst Menü (3 Ana Ekran: Ana Ekran, Tahminlerim, Lider Tablosu) */}
       <Navbar currentTab={currentTab} onSelectTab={handleSelectTab} />
 
       {/* Sayfa İçeriği */}
       <main className="main-content">
+        {currentTab === 'home' && <HomePage onNavigate={handleSelectTab} />}
+
         {currentTab === 'matches' && <PredictionsPage />}
 
         {currentTab === 'leaderboard' && <LeaderboardPage />}
-
-        {currentTab === 'admin' && (
-          <ProtectedRoute
-            requireAdmin={true}
-            onNavigateLogin={() => {}}
-            onNavigateHome={() => handleSelectTab('matches')}
-          >
-            <AdminPage />
-          </ProtectedRoute>
-        )}
       </main>
 
       {/* Mobil Alt Menü */}
@@ -105,3 +129,4 @@ export const App: React.FC = () => {
 };
 
 export default App;
+

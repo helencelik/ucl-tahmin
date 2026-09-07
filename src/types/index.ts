@@ -3,6 +3,8 @@ export type UserRole = 'admin' | 'user';
 export interface UserProfile {
   id: string;
   email?: string;
+  username?: string;
+  display_name?: string;
   name: string;
   role: UserRole;
   total_points: number;
@@ -10,6 +12,14 @@ export interface UserProfile {
 }
 
 export type MatchStatus = 'pending' | 'finished';
+
+export type TournamentStage =
+  | 'league'
+  | 'round_of_32'
+  | 'round_of_16'
+  | 'quarter_finals'
+  | 'semi_finals'
+  | 'final';
 
 export interface Match {
   id: string;
@@ -21,6 +31,9 @@ export interface Match {
   status: MatchStatus;
   real_home_score?: number | null;
   real_away_score?: number | null;
+  stage?: TournamentStage | string;
+  matchweek?: number;
+  stadium?: string;
   created_at?: string;
 }
 
@@ -39,5 +52,8 @@ export interface Prediction {
 
 export interface LeaderboardUser extends UserProfile {
   exact_scores_count?: number;
+  diff_scores_count?: number;
+  result_scores_count?: number;
+  predictions_count?: number;
   rank?: number;
 }

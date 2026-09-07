@@ -252,59 +252,47 @@ body {
   opacity: 0.8;
 }
 
-.user-profile-badge {
-  display: flex;
+.navbar-user-badge {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 10px 4px 4px;
-  background: rgba(255, 255, 255, 0.04);
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-full);
-}
-
-.user-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1d4ed8, #00f2fe);
+  padding: 5px 12px;
   color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 12px;
+  transition: all 0.2s ease;
 }
 
-.user-text-info {
-  display: none;
-  flex-direction: column;
+.navbar-user-badge:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-@media (min-width: 640px) {
-  .user-text-info {
-    display: flex;
-  }
-}
-
-.user-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  line-height: 1.2;
-}
-
-.user-role-tag {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.user-role-tag.admin {
+.user-badge-icon {
   color: var(--neon-cyan);
+  flex-shrink: 0;
 }
 
-.user-role-tag.user {
-  color: var(--text-muted);
+.user-display-name-text {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  color: #fff;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.user-admin-tag {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--warning);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
 }
 
 .logout-btn {

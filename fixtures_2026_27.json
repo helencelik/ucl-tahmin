@@ -1,0 +1,1346 @@
+{
+  "competition": "UEFA Champions League",
+  "season": "2026/27",
+  "phase": "League Phase",
+  "timezone": "Europe/Vienna",
+  "matchdays": [
+    {
+      "matchday": 1,
+      "matches": [
+        {
+          "matchday": 1,
+          "date": "2026-09-08",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "AEK Athens",
+          "away": "LASK Linz",
+          "stadium": "OPAP Arena"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-08",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Club Brugge",
+          "away": "Aston Villa",
+          "stadium": "Jan Breydel Stadium"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Borussia Dortmund",
+          "away": "Villarreal",
+          "stadium": "Signal Iduna Park"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "FC Porto",
+          "away": "Manchester City",
+          "stadium": "Estádio do Dragão"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Lille",
+          "away": "Real Betis",
+          "stadium": "Decathlon Arena – Stade Pierre-Mauroy"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Real Madrid",
+          "away": "Inter",
+          "stadium": "Santiago Bernabéu"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-09",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Barcelona",
+          "away": "Feyenoord",
+          "stadium": "Spotify Camp Nou"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-09",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Stuttgart",
+          "away": "Viking",
+          "stadium": "MHPArena"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Liverpool",
+          "away": "Atlético Madrid",
+          "stadium": "Anfield"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Paris Saint-Germain",
+          "away": "Slovan Bratislava",
+          "stadium": "Parc des Princes"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Sporting CP",
+          "away": "Galatasaray",
+          "stadium": "Estádio José Alvalade"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Napoli",
+          "away": "Arsenal",
+          "stadium": "Stadio Diego Armando Maradona"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-10",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Fenerbahçe",
+          "away": "Roma",
+          "stadium": "Ülker Stadyumu"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-10",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "PSV",
+          "away": "Shakhtar Donetsk",
+          "stadium": "Philips Stadion"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-10",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Como",
+          "away": "RB Leipzig",
+          "stadium": "Stadio Giuseppe Sinigaglia"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-10",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Bayern Munich",
+          "away": "Bodø/Glimt",
+          "stadium": "Allianz Arena"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-10",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Manchester United",
+          "away": "Sabah",
+          "stadium": "Old Trafford"
+        },
+        {
+          "matchday": 1,
+          "date": "2026-09-10",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Slavia Prague",
+          "away": "Lens",
+          "stadium": "Fortuna Arena"
+        }
+      ]
+    },
+    {
+      "matchday": 2,
+      "matches": [
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Lens",
+          "away": "Sporting CP",
+          "stadium": "Stade Bollaert-Delelis"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Sabah",
+          "away": "Slavia Prague",
+          "stadium": "Bank Respublika Arena"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Arsenal",
+          "away": "Lille",
+          "stadium": "Emirates Stadium"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Atlético Madrid",
+          "away": "Manchester United",
+          "stadium": "Riyadh Air Metropolitano"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Inter",
+          "away": "Club Brugge",
+          "stadium": "San Siro"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Galatasaray",
+          "away": "Barcelona",
+          "stadium": "RAMS Park"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "RB Leipzig",
+          "away": "PSV",
+          "stadium": "Red Bull Arena"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Viking",
+          "away": "Bayern Munich",
+          "stadium": "SR-Bank Arena"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-13",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Villarreal",
+          "away": "Napoli",
+          "stadium": "Estadio de la Cerámica"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Feyenoord",
+          "away": "Como",
+          "stadium": "De Kuip"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "LASK Linz",
+          "away": "Liverpool",
+          "stadium": "Raiffeisen Arena"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Roma",
+          "away": "Real Madrid",
+          "stadium": "Stadio Olimpico"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Aston Villa",
+          "away": "Fenerbahçe",
+          "stadium": "Villa Park"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Shakhtar Donetsk",
+          "away": "AEK Athens",
+          "stadium": "Arena Lviv"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Bodø/Glimt",
+          "away": "Borussia Dortmund",
+          "stadium": "Aspmyra Stadion"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Manchester City",
+          "away": "Paris Saint-Germain",
+          "stadium": "Etihad Stadium"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Real Betis",
+          "away": "FC Porto",
+          "stadium": "Estadio La Cartuja"
+        },
+        {
+          "matchday": 2,
+          "date": "2026-10-14",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Slovan Bratislava",
+          "away": "Stuttgart",
+          "stadium": "Tehelné pole"
+        }
+      ]
+    },
+    {
+      "matchday": 3,
+      "matches": [
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Fenerbahçe",
+          "away": "Slavia Prague",
+          "stadium": "Ülker Stadyumu"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Sabah",
+          "away": "Borussia Dortmund",
+          "stadium": "Bank Respublika Arena"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Roma",
+          "away": "Slovan Bratislava",
+          "stadium": "Stadio Olimpico"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "FC Porto",
+          "away": "PSV",
+          "stadium": "Estádio do Dragão"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Liverpool",
+          "away": "Villarreal",
+          "stadium": "Anfield"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Manchester City",
+          "away": "AEK Athens",
+          "stadium": "Etihad Stadium"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Paris Saint-Germain",
+          "away": "Barcelona",
+          "stadium": "Parc des Princes"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Napoli",
+          "away": "Bodø/Glimt",
+          "stadium": "Stadio Diego Armando Maradona"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Stuttgart",
+          "away": "Atlético Madrid",
+          "stadium": "MHPArena"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Como",
+          "away": "Manchester United",
+          "stadium": "Stadio Giuseppe Sinigaglia"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Lille",
+          "away": "Galatasaray",
+          "stadium": "Decathlon Arena – Stade Pierre-Mauroy"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Aston Villa",
+          "away": "Viking",
+          "stadium": "Villa Park"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Club Brugge",
+          "away": "Lens",
+          "stadium": "Jan Breydel Stadium"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Bayern Munich",
+          "away": "Arsenal",
+          "stadium": "Allianz Arena"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Inter",
+          "away": "Shakhtar Donetsk",
+          "stadium": "San Siro"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Real Madrid",
+          "away": "RB Leipzig",
+          "stadium": "Santiago Bernabéu"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Real Betis",
+          "away": "Feyenoord",
+          "stadium": "Estadio La Cartuja"
+        },
+        {
+          "matchday": 3,
+          "date": "2026-10-21",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Sporting CP",
+          "away": "LASK Linz",
+          "stadium": "Estádio José Alvalade"
+        }
+      ]
+    },
+    {
+      "matchday": 4,
+      "matches": [
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Shakhtar Donetsk",
+          "away": "Sporting CP",
+          "stadium": "Arena Lviv"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Galatasaray",
+          "away": "Stuttgart",
+          "stadium": "RAMS Park"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Atlético Madrid",
+          "away": "Bayern Munich",
+          "stadium": "Riyadh Air Metropolitano"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Barcelona",
+          "away": "Aston Villa",
+          "stadium": "Spotify Camp Nou"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Feyenoord",
+          "away": "Inter",
+          "stadium": "De Kuip"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Bodø/Glimt",
+          "away": "Lille",
+          "stadium": "Aspmyra Stadion"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "LASK Linz",
+          "away": "Slovan Bratislava",
+          "stadium": "Raiffeisen Arena"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Manchester United",
+          "away": "Roma",
+          "stadium": "Old Trafford"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-03",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Villarreal",
+          "away": "Paris Saint-Germain",
+          "stadium": "Estadio de la Cerámica"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "AEK Athens",
+          "away": "Real Madrid",
+          "stadium": "OPAP Arena"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Fenerbahçe",
+          "away": "Liverpool",
+          "stadium": "Ülker Stadyumu"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Borussia Dortmund",
+          "away": "Real Betis",
+          "stadium": "Signal Iduna Park"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "FC Porto",
+          "away": "Napoli",
+          "stadium": "Estádio do Dragão"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "PSV",
+          "away": "Club Brugge",
+          "stadium": "Philips Stadion"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "RB Leipzig",
+          "away": "Manchester City",
+          "stadium": "Red Bull Arena"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Lens",
+          "away": "Como",
+          "stadium": "Stade Bollaert-Delelis"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Slavia Prague",
+          "away": "Arsenal",
+          "stadium": "Fortuna Arena"
+        },
+        {
+          "matchday": 4,
+          "date": "2026-11-04",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Viking",
+          "away": "Sabah",
+          "stadium": "SR-Bank Arena"
+        }
+      ]
+    },
+    {
+      "matchday": 5,
+      "matches": [
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Bodø/Glimt",
+          "away": "LASK Linz",
+          "stadium": "Aspmyra Stadion"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Galatasaray",
+          "away": "Aston Villa",
+          "stadium": "RAMS Park"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Arsenal",
+          "away": "Borussia Dortmund",
+          "stadium": "Emirates Stadium"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Como",
+          "away": "AEK Athens",
+          "stadium": "Stadio Giuseppe Sinigaglia"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Feyenoord",
+          "away": "FC Porto",
+          "stadium": "De Kuip"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Manchester City",
+          "away": "Napoli",
+          "stadium": "Etihad Stadium"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "RB Leipzig",
+          "away": "Lens",
+          "stadium": "Red Bull Arena"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Real Madrid",
+          "away": "PSV",
+          "stadium": "Santiago Bernabéu"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-24",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Slovan Bratislava",
+          "away": "Real Betis",
+          "stadium": "Tehelné pole"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Sabah",
+          "away": "Barcelona",
+          "stadium": "Bank Respublika Arena"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Slavia Prague",
+          "away": "Villarreal",
+          "stadium": "Fortuna Arena"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Atlético Madrid",
+          "away": "Viking",
+          "stadium": "Riyadh Air Metropolitano"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Club Brugge",
+          "away": "Liverpool",
+          "stadium": "Jan Breydel Stadium"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Inter",
+          "away": "Stuttgart",
+          "stadium": "San Siro"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Shakhtar Donetsk",
+          "away": "Fenerbahçe",
+          "stadium": "Arena Lviv"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Lille",
+          "away": "Bayern Munich",
+          "stadium": "Decathlon Arena – Stade Pierre-Mauroy"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Paris Saint-Germain",
+          "away": "Roma",
+          "stadium": "Parc des Princes"
+        },
+        {
+          "matchday": 5,
+          "date": "2026-11-25",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Sporting CP",
+          "away": "Manchester United",
+          "stadium": "Estádio José Alvalade"
+        }
+      ]
+    },
+    {
+      "matchday": 6,
+      "matches": [
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Viking",
+          "away": "Feyenoord",
+          "stadium": "SR-Bank Arena"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Villarreal",
+          "away": "Sabah",
+          "stadium": "Estadio de la Cerámica"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "AEK Athens",
+          "away": "Galatasaray",
+          "stadium": "OPAP Arena"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Roma",
+          "away": "Sporting CP",
+          "stadium": "Stadio Olimpico"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Aston Villa",
+          "away": "Paris Saint-Germain",
+          "stadium": "Villa Park"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Barcelona",
+          "away": "Manchester City",
+          "stadium": "Spotify Camp Nou"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Bayern Munich",
+          "away": "Slavia Prague",
+          "stadium": "Allianz Arena"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Manchester United",
+          "away": "RB Leipzig",
+          "stadium": "Old Trafford"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-08",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Napoli",
+          "away": "Club Brugge",
+          "stadium": "Stadio Diego Armando Maradona"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Real Betis",
+          "away": "Como",
+          "stadium": "Estadio La Cartuja"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Slovan Bratislava",
+          "away": "Shakhtar Donetsk",
+          "stadium": "Tehelné pole"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Arsenal",
+          "away": "Real Madrid",
+          "stadium": "Emirates Stadium"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Borussia Dortmund",
+          "away": "Inter",
+          "stadium": "Signal Iduna Park"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "LASK Linz",
+          "away": "Fenerbahçe",
+          "stadium": "Raiffeisen Arena"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Liverpool",
+          "away": "FC Porto",
+          "stadium": "Anfield"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "PSV",
+          "away": "Atlético Madrid",
+          "stadium": "Philips Stadion"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Lens",
+          "away": "Bodø/Glimt",
+          "stadium": "Stade Bollaert-Delelis"
+        },
+        {
+          "matchday": 6,
+          "date": "2026-12-09",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Stuttgart",
+          "away": "Lille",
+          "stadium": "MHPArena"
+        }
+      ]
+    },
+    {
+      "matchday": 7,
+      "matches": [
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Bodø/Glimt",
+          "away": "Atlético Madrid",
+          "stadium": "Aspmyra Stadion"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Galatasaray",
+          "away": "Feyenoord",
+          "stadium": "RAMS Park"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "AEK Athens",
+          "away": "Roma",
+          "stadium": "OPAP Arena"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Aston Villa",
+          "away": "Borussia Dortmund",
+          "stadium": "Villa Park"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Inter",
+          "away": "Liverpool",
+          "stadium": "San Siro"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "FC Porto",
+          "away": "Slavia Prague",
+          "stadium": "Estádio do Dragão"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Lille",
+          "away": "Slovan Bratislava",
+          "stadium": "Decathlon Arena – Stade Pierre-Mauroy"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Real Madrid",
+          "away": "LASK Linz",
+          "stadium": "Santiago Bernabéu"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-19",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Stuttgart",
+          "away": "Club Brugge",
+          "stadium": "MHPArena"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Fenerbahçe",
+          "away": "Villarreal",
+          "stadium": "Ülker Stadyumu"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "18:45",
+          "timezone": "Europe/Vienna",
+          "home": "Sabah",
+          "away": "Napoli",
+          "stadium": "Bank Respublika Arena"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Como",
+          "away": "Paris Saint-Germain",
+          "stadium": "Stadio Giuseppe Sinigaglia"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Manchester United",
+          "away": "Bayern Munich",
+          "stadium": "Old Trafford"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "RB Leipzig",
+          "away": "Shakhtar Donetsk",
+          "stadium": "Red Bull Arena"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Lens",
+          "away": "Manchester City",
+          "stadium": "Stade Bollaert-Delelis"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Real Betis",
+          "away": "Arsenal",
+          "stadium": "Estadio La Cartuja"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Sporting CP",
+          "away": "Barcelona",
+          "stadium": "Estádio José Alvalade"
+        },
+        {
+          "matchday": 7,
+          "date": "2027-01-20",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Viking",
+          "away": "PSV",
+          "stadium": "SR-Bank Arena"
+        }
+      ]
+    },
+    {
+      "matchday": 8,
+      "matches": [
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Arsenal",
+          "away": "Sabah",
+          "stadium": "Emirates Stadium"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Roma",
+          "away": "Lille",
+          "stadium": "Stadio Olimpico"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Atlético Madrid",
+          "away": "Fenerbahçe",
+          "stadium": "Riyadh Air Metropolitano"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Borussia Dortmund",
+          "away": "AEK Athens",
+          "stadium": "Signal Iduna Park"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Club Brugge",
+          "away": "Bodø/Glimt",
+          "stadium": "Jan Breydel Stadium"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Bayern Munich",
+          "away": "Real Betis",
+          "stadium": "Allianz Arena"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Barcelona",
+          "away": "Como",
+          "stadium": "Spotify Camp Nou"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Shakhtar Donetsk",
+          "away": "Real Madrid",
+          "stadium": "Arena Lviv"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Feyenoord",
+          "away": "RB Leipzig",
+          "stadium": "De Kuip"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "LASK Linz",
+          "away": "FC Porto",
+          "stadium": "Raiffeisen Arena"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Liverpool",
+          "away": "Lens",
+          "stadium": "Anfield"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Manchester City",
+          "away": "Sporting CP",
+          "stadium": "Etihad Stadium"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Paris Saint-Germain",
+          "away": "Galatasaray",
+          "stadium": "Parc des Princes"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "PSV",
+          "away": "Stuttgart",
+          "stadium": "Philips Stadion"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Slavia Prague",
+          "away": "Aston Villa",
+          "stadium": "Fortuna Arena"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Napoli",
+          "away": "Viking",
+          "stadium": "Stadio Diego Armando Maradona"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Villarreal",
+          "away": "Manchester United",
+          "stadium": "Estadio de la Cerámica"
+        },
+        {
+          "matchday": 8,
+          "date": "2027-01-27",
+          "time": "21:00",
+          "timezone": "Europe/Vienna",
+          "home": "Slovan Bratislava",
+          "away": "Inter",
+          "stadium": "Tehelné pole"
+        }
+      ]
+    }
+  ],
+  "note": "2026/27 UEFA Champions League league-phase fixtures. Dates and kickoff times are based on UEFA's confirmed schedule; times are represented in Europe/Vienna local time. Stadium names are the home venues associated with the listed home clubs.",
+  "total_matches": 144
+}

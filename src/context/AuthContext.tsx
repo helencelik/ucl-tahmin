@@ -6,40 +6,139 @@ interface AuthContextType {
   user: UserProfile | null;
   loading: boolean;
   isDemo: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (identifier: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  register: (username: string, displayName: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Supabase henüz yapılandırılmamışsa veya demo amaçlı kullanılacak ön tanımlı hesaplar
+// Supabase henüz yapılandırılmamışsa veya test/demo amaçlı kullanılacak 10 kişilik hesaplar
 const DEMO_ACCOUNTS: Record<string, UserProfile> = {
-  'admin@ucl.com': {
-    id: 'admin-id',
-    email: 'admin@ucl.com',
-    name: 'Lig Yöneticisi',
+  admin: {
+    id: 'bc4b67a1-a8e0-41b4-8604-04f0585ab7f6',
+    username: 'admin',
+    display_name: 'Administrator',
+    name: 'Administrator',
+    email: 'admin@gmail.com',
     role: 'admin',
     total_points: 0,
     created_at: new Date().toISOString()
   },
-  'user1@ucl.com': {
-    id: 'u1',
-    email: 'user1@ucl.com',
-    name: 'Ahmet Yılmaz',
+  abdullah: {
+    id: 'a342f20f-7591-453e-8afd-98d72a46bba2',
+    username: 'abdullah',
+    display_name: 'Abdullah Çelik',
+    name: 'Abdullah Çelik',
+    email: 'abdullah@gmail.com',
     role: 'user',
-    total_points: 12,
+    total_points: 0,
     created_at: new Date().toISOString()
   },
-  'user2@ucl.com': {
-    id: 'u2',
-    email: 'user2@ucl.com',
-    name: 'Mehmet Demir',
+  enes: {
+    id: '1fbec0eb-bdb4-4a8e-b139-c4c1a6136f1c',
+    username: 'enes',
+    display_name: 'Enes Can Özdemir',
+    name: 'Enes Can Özdemir',
+    email: 'enes@gmail.com',
     role: 'user',
-    total_points: 9,
+    total_points: 0,
+    created_at: new Date().toISOString()
+  },
+  onur: {
+    id: '37a07a28-fe10-4b2a-befd-9823122cd1dc',
+    username: 'onur',
+    display_name: 'Onur Can Tarakçı',
+    name: 'Onur Can Tarakçı',
+    email: 'onur@gmail.com',
+    role: 'user',
+    total_points: 0,
+    created_at: new Date().toISOString()
+  },
+  emrullah: {
+    id: '87ac18c8-96bb-42ec-ac90-fca694bf176e',
+    username: 'emrullah',
+    display_name: 'Mete Emrullah Akyüz',
+    name: 'Mete Emrullah Akyüz',
+    email: 'emrullah@gmail.com',
+    role: 'user',
+    total_points: 0,
+    created_at: new Date().toISOString()
+  },
+  oguzhan: {
+    id: 'b3186800-09eb-4f8f-9593-3815dd05a38d',
+    username: 'oguzhan',
+    display_name: 'Oğuzhan Yeşilkaya',
+    name: 'Oğuzhan Yeşilkaya',
+    email: 'oguzhan@gmail.com',
+    role: 'user',
+    total_points: 0,
+    created_at: new Date().toISOString()
+  },
+  yasin: {
+    id: 'caaeebcf-2e31-4d0b-b2b4-398b81a6a1a6',
+    username: 'yasin',
+    display_name: 'Yasin Başoğlu',
+    name: 'Yasin Başoğlu',
+    email: 'yasin@gmail.com',
+    role: 'user',
+    total_points: 0,
+    created_at: new Date().toISOString()
+  },
+  nurullah: {
+    id: 'e503e16f-117d-405b-9ebf-ac006899e4ab',
+    username: 'nurullah',
+    display_name: 'Nurullah Karabağ',
+    name: 'Nurullah Karabağ',
+    email: 'nurullah@gmail.com',
+    role: 'user',
+    total_points: 0,
+    created_at: new Date().toISOString()
+  },
+  ismail: {
+    id: 'f3b527a2-0b31-4be0-aac2-a2fcb8a50bd7',
+    username: 'ismail',
+    display_name: 'İsmail Berat Çelik',
+    name: 'İsmail Berat Çelik',
+    email: 'ismail@gmail.com',
+    role: 'user',
+    total_points: 0,
+    created_at: new Date().toISOString()
+  },
+  ahmetcan: {
+    id: 'f4f4f428-fe49-413d-b240-7773698ef33b',
+    username: 'ahmetcan',
+    display_name: 'Ahmet Can Güllüce',
+    name: 'Ahmet Can Güllüce',
+    email: 'ahmetcan@gmail.com',
+    role: 'user',
+    total_points: 0,
+    created_at: new Date().toISOString()
+  },
+  test: {
+    id: '56cac67a-ebbb-42ce-b50c-ef9d789eef7b',
+    username: 'test',
+    display_name: 'test',
+    name: 'test',
+    email: 'test@gmail.com',
+    role: 'user',
+    total_points: 0,
     created_at: new Date().toISOString()
   }
 };
+
+// Hızlı takma adlar
+DEMO_ACCOUNTS['a'] = DEMO_ACCOUNTS['admin'];
+DEMO_ACCOUNTS['b'] = DEMO_ACCOUNTS['abdullah'];
+DEMO_ACCOUNTS['c'] = DEMO_ACCOUNTS['enes'];
+DEMO_ACCOUNTS['d'] = DEMO_ACCOUNTS['onur'];
+DEMO_ACCOUNTS['e'] = DEMO_ACCOUNTS['emrullah'];
+DEMO_ACCOUNTS['f'] = DEMO_ACCOUNTS['oguzhan'];
+DEMO_ACCOUNTS['g'] = DEMO_ACCOUNTS['yasin'];
+DEMO_ACCOUNTS['h'] = DEMO_ACCOUNTS['nurullah'];
+DEMO_ACCOUNTS['i'] = DEMO_ACCOUNTS['ismail'];
+DEMO_ACCOUNTS['j'] = DEMO_ACCOUNTS['ahmetcan'];
 
 const LS_AUTH_KEY = 'ucl_demo_user';
 
@@ -69,14 +168,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .maybeSingle();
 
       if (error) {
-        console.error('[AuthContext] public.users tablosundan profil okunurken hata (RLS izinlerini kontrol ediniz):', error);
+        console.error('[AuthContext] public.users tablosundan profil okunurken hata:', error);
       }
 
       if (data) {
-        const detectedRole = normalizeRole(data.role);
-        console.log(`[AuthContext] Kullanıcı profili veritabanından başarıyla okundu. Rol: ${detectedRole} (Ham veritabanı değeri: "${data.role}")`);
+        let detectedRole = normalizeRole(data.role);
+        const resolvedUsername = data.username || (data.email ? data.email.split('@')[0] : '');
+        const exactName = data.name || data.display_name || resolvedUsername;
+
+        // KRİTİK GÜVENCE: Kullanıcı adı veya e-postası 'admin' olan hesaplar her halükarda admin yapılır
+        if (
+          resolvedUsername.toLowerCase() === 'admin' ||
+          (data.email && (data.email.toLowerCase().startsWith('admin@') || data.email.toLowerCase() === 'admin@gmail.com' || data.email.toLowerCase() === 'admin@ucl.com')) ||
+          String(data.role).toLowerCase().trim() === 'admin'
+        ) {
+          detectedRole = 'admin';
+        }
+
         return {
           ...data,
+          username: resolvedUsername,
+          display_name: data.display_name || data.name || resolvedUsername,
+          name: exactName,
           role: detectedRole
         } as UserProfile;
       }
@@ -94,7 +207,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const meta = authUser?.user_metadata || {};
       const appMeta = authUser?.app_metadata || {};
 
-      // 3. ID ile bulunamadıysa E-posta ile veritabanında ara (kullanıcı manuel satır eklediyse veya id farklıysa)
+      // 3. ID ile bulunamadıysa E-posta veya Username ile veritabanında ara
       if (rawEmail) {
         const { data: emailData, error: emailErr } = await supabase
           .from('users')
@@ -107,50 +220,66 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         if (emailData) {
-          const detectedRole = normalizeRole(emailData.role);
-          console.log(`[AuthContext] Kullanıcı e-posta (${rawEmail}) ile veritabanında bulundu. Rol: ${detectedRole}`);
+          let detectedRole = normalizeRole(emailData.role);
+          const resolvedUsername = emailData.username || meta.username || rawEmail.split('@')[0];
+          const resolvedDisplayName = emailData.display_name || emailData.name || meta.display_name || resolvedUsername;
+
+          if (
+            resolvedUsername.toLowerCase() === 'admin' ||
+            normalizedEmail.startsWith('admin@') ||
+            normalizedEmail === 'admin@gmail.com' ||
+            normalizedEmail === 'admin@ucl.com' ||
+            String(emailData.role).toLowerCase().trim() === 'admin'
+          ) {
+            detectedRole = 'admin';
+          }
 
           // Eğer veritabanındaki id ile auth id farklıysa, id'yi senkronize et
           if (emailData.id !== userId) {
             await supabase
               .from('users')
-              .update({ id: userId, role: detectedRole })
+              .update({ id: userId, role: detectedRole, username: resolvedUsername, display_name: resolvedDisplayName })
               .eq('id', emailData.id);
           }
 
           return {
             ...emailData,
             id: userId,
+            username: resolvedUsername,
+            display_name: resolvedDisplayName,
+            name: resolvedDisplayName,
             role: detectedRole
           } as UserProfile;
         }
       }
 
-      // 4. Profil public.users'ta kesinlikle yoksa:
-      const derivedName =
-        meta.name ||
-        meta.full_name ||
-        (rawEmail ? rawEmail.split('@')[0] : 'Kullanıcı');
+      // 4. Profil public.users'ta kesinlikle yoksa türet:
+      const derivedUsername = meta.username || (rawEmail ? rawEmail.split('@')[0] : 'kullanici');
+      const derivedDisplayName = meta.display_name || meta.name || meta.full_name || derivedUsername;
 
-      // Rolü belirle: Auth metadata, app_metadata veya admin e-postası
+      // Rolü belirle: Auth metadata, app_metadata veya admin e-postası / kullanıcı adı
       const isMetaAdmin =
         normalizeRole(meta.role) === 'admin' ||
         normalizeRole(appMeta.role) === 'admin' ||
         appMeta.claims_admin === true ||
+        derivedUsername.toLowerCase() === 'admin' ||
         normalizedEmail === 'admin@ucl.com' ||
-        normalizedEmail.includes('admin');
+        normalizedEmail === 'admin@gmail.com' ||
+        normalizedEmail.startsWith('admin@');
 
       const derivedRole: 'admin' | 'user' = isMetaAdmin ? 'admin' : 'user';
 
       const newRecord = {
         id: userId,
-        email: rawEmail,
-        name: derivedName,
+        email: rawEmail || `${derivedUsername}@gmail.com`,
+        username: derivedUsername,
+        display_name: derivedDisplayName,
+        name: derivedDisplayName,
         role: derivedRole,
         total_points: 0
       };
 
-      // 5. Yeni profili güvenli şekilde ekle (Var olan admin yetkisini ezmemek için sadece insert)
+      // 5. Yeni profili güvenli şekilde ekle
       const { data: inserted, error: insertErr } = await supabase
         .from('users')
         .insert([newRecord])
@@ -160,13 +289,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (inserted) {
         return {
           ...inserted,
+          username: inserted.username || derivedUsername,
+          display_name: inserted.display_name || derivedDisplayName,
+          name: inserted.name || derivedDisplayName,
           role: normalizeRole(inserted.role)
         } as UserProfile;
       }
 
       if (insertErr) {
-        console.warn('[AuthContext] Otomatik profil oluşturma uyarısı (kayıt zaten var olabilir):', insertErr);
-        // Hata durumunda (örneğin kayıt zaten varsa) tekrar okumayı dene
+        console.warn('[AuthContext] Otomatik profil oluşturma uyarısı:', insertErr);
         const { data: retryData } = await supabase
           .from('users')
           .select('*')
@@ -176,16 +307,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (retryData) {
           return {
             ...retryData,
+            username: retryData.username || derivedUsername,
+            display_name: retryData.display_name || derivedDisplayName,
+            name: retryData.name || derivedDisplayName,
             role: normalizeRole(retryData.role)
           } as UserProfile;
         }
       }
 
-      // Veritabanına anlık yazılamasa bile arayüzün kilitlenmesini önle
       return {
         id: userId,
-        email: rawEmail,
-        name: derivedName,
+        email: rawEmail || `${derivedUsername}@ucl.app`,
+        username: derivedUsername,
+        display_name: derivedDisplayName,
+        name: derivedDisplayName,
         role: derivedRole,
         total_points: 0,
         created_at: new Date().toISOString()
@@ -196,6 +331,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return {
         id,
         email: '',
+        username: 'kullanici',
+        display_name: 'Kullanıcı',
         name: 'Kullanıcı',
         role: 'user',
         total_points: 0,
@@ -220,17 +357,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (isDemo) {
-      // Demo modunda localStorage'dan aktif hesabı oku (varsayılan Ahmet Yılmaz)
       const saved = localStorage.getItem(LS_AUTH_KEY);
       if (saved) {
         try {
           setUser(JSON.parse(saved));
         } catch {
-          setUser(DEMO_ACCOUNTS['user1@ucl.com']);
+          setUser(DEMO_ACCOUNTS['abdullah']);
         }
       } else {
-        setUser(DEMO_ACCOUNTS['user1@ucl.com']);
-        localStorage.setItem(LS_AUTH_KEY, JSON.stringify(DEMO_ACCOUNTS['user1@ucl.com']));
+        setUser(DEMO_ACCOUNTS['abdullah']);
+        localStorage.setItem(LS_AUTH_KEY, JSON.stringify(DEMO_ACCOUNTS['abdullah']));
       }
       setLoading(false);
       return;
@@ -269,38 +405,74 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [isDemo]);
 
-  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+  // KULLANICI ADI (VEYA E-POSTA) VE ŞİFRE İLE GİRİŞ YAPMA
+  const login = async (identifier: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    const clean = identifier.trim();
+    if (!clean) {
+      return { success: false, error: 'Lütfen kullanıcı adınızı giriniz.' };
+    }
+
+    if (!password) {
+      return { success: false, error: 'Lütfen şifrenizi giriniz.' };
+    }
+
     if (isDemo) {
-      const normalizedEmail = email.trim().toLowerCase();
-      // Demo modunda admin veya kullanıcı girişi
-      if (normalizedEmail.includes('admin') || normalizedEmail === 'admin@ucl.com') {
-        const adminAcc = DEMO_ACCOUNTS['admin@ucl.com'];
+      const lower = clean.toLowerCase();
+      if (lower === 'admin' || lower === 'a' || lower === 'admin@ucl.com' || lower.includes('admin')) {
+        const adminAcc = DEMO_ACCOUNTS['admin'];
         setUser(adminAcc);
         localStorage.setItem(LS_AUTH_KEY, JSON.stringify(adminAcc));
         return { success: true };
-      } else {
-        const matched = DEMO_ACCOUNTS[normalizedEmail] || {
-          id: 'demo-user-' + normalizedEmail.replace(/[^a-z0-9]/g, ''),
-          email: normalizedEmail,
-          name: normalizedEmail.split('@')[0],
-          role: 'user' as const,
-          total_points: 0,
-          created_at: new Date().toISOString()
-        };
-        setUser(matched);
-        localStorage.setItem(LS_AUTH_KEY, JSON.stringify(matched));
-        return { success: true };
       }
+
+      const matched = DEMO_ACCOUNTS[lower] || Object.values(DEMO_ACCOUNTS).find(
+        (acc) => acc.username?.toLowerCase() === lower || acc.name.toLowerCase() === lower || acc.email?.toLowerCase() === lower
+      ) || {
+        id: 'demo-user-' + lower.replace(/[^a-z0-9]/g, ''),
+        email: `${lower}@ucl.app`,
+        username: lower,
+        name: clean,
+        display_name: clean,
+        role: 'user' as const,
+        total_points: 0,
+        created_at: new Date().toISOString()
+      };
+
+      setUser(matched);
+      localStorage.setItem(LS_AUTH_KEY, JSON.stringify(matched));
+      return { success: true };
     }
 
     try {
+      let targetEmail = clean;
+
+      // Kullanıcı sadece username girdiğinde arka planda otomatik olarak @gmail.com formatına dönüştür
+      if (!clean.includes('@')) {
+        targetEmail = `${clean.toLowerCase()}@gmail.com`;
+
+        // Eğer veritabanında bu username veya name için önceden tanımlanmış özel bir email varsa onu kullan
+        const { data: userRecord, error: userLookupErr } = await supabase
+          .from('users')
+          .select('id, email, username, name')
+          .or(`username.ilike.${clean},name.ilike.${clean}`)
+          .maybeSingle();
+
+        if (userLookupErr) {
+          console.warn('[AuthContext] Kullanıcı sorgulama uyarısı:', userLookupErr);
+        }
+
+        if (userRecord?.email) {
+          targetEmail = userRecord.email;
+        }
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
+        email: targetEmail,
         password
       });
 
       if (error) {
-        return { success: false, error: error.message };
+        return { success: false, error: 'Giriş yapılamadı. Kullanıcı adı veya şifre hatalı.' };
       }
 
       if (data.user) {
@@ -318,6 +490,92 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // KULLANICI ADI, GÖRÜNEN İSİM VE ŞİFRE İLE KAYIT OLMA (E-POSTA ZORUNLULUĞU YOK)
+  const register = async (username: string, displayName: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    const cleanUsername = username.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
+    const cleanDisplayName = displayName.trim() || cleanUsername;
+
+    if (!cleanUsername) {
+      return { success: false, error: 'Lütfen geçerli bir kullanıcı adı giriniz (harf, rakam veya alt çizgi).' };
+    }
+
+    if (!password || password.length < 6) {
+      return { success: false, error: 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.' };
+    }
+
+    if (isDemo) {
+      const newAcc: UserProfile = {
+        id: 'demo-user-' + cleanUsername,
+        username: cleanUsername,
+        display_name: cleanDisplayName,
+        name: cleanDisplayName,
+        email: `${cleanUsername}@ucl.app`,
+        role: 'user',
+        total_points: 0,
+        created_at: new Date().toISOString()
+      };
+      DEMO_ACCOUNTS[cleanUsername] = newAcc;
+      setUser(newAcc);
+      localStorage.setItem(LS_AUTH_KEY, JSON.stringify(newAcc));
+      return { success: true };
+    }
+
+    try {
+      // 1. Kullanıcı adının önceden alınıp alınmadığını kontrol et
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('id, username')
+        .or(`username.ilike.${cleanUsername},name.ilike.${cleanUsername}`)
+        .maybeSingle();
+
+      if (existingUser) {
+        return { success: false, error: `"${cleanUsername}" kullanıcı adı zaten kullanımda. Farklı bir kullanıcı adı seçiniz.` };
+      }
+
+      // 2. Supabase auth signUp çağrısı (arka planda username@gmail.com formatı ile)
+      const internalEmail = cleanUsername.includes('@') ? cleanUsername.toLowerCase() : `${cleanUsername}@gmail.com`;
+      const { data, error } = await supabase.auth.signUp({
+        email: internalEmail,
+        password,
+        options: {
+          data: {
+            username: cleanUsername,
+            display_name: cleanDisplayName,
+            name: cleanDisplayName,
+            role: 'user'
+          }
+        }
+      });
+
+      if (error) {
+        return { success: false, error: error.message || 'Kayıt işlemi gerçekleştirilemedi.' };
+      }
+
+      if (data.user) {
+        // 3. public.users tablosuna da doğrudan kaydet
+        await supabase
+          .from('users')
+          .upsert({
+            id: data.user.id,
+            email: internalEmail,
+            username: cleanUsername,
+            display_name: cleanDisplayName,
+            name: cleanDisplayName,
+            role: 'user',
+            total_points: 0
+          }, { onConflict: 'id' });
+
+        const profile = await fetchProfile(data.user);
+        if (profile) setUser(profile);
+        return { success: true };
+      }
+
+      return { success: false, error: 'Kayıt oluşturulamadı.' };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Kayıt sırasında bir hata oluştu.' };
+    }
+  };
+
   const logout = async () => {
     if (isDemo) {
       localStorage.removeItem(LS_AUTH_KEY);
@@ -329,7 +587,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, isDemo, login, logout, refreshProfile }}>
+    <AuthContext.Provider value={{ user, loading, isDemo, login, register, logout, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

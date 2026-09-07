@@ -64,8 +64,10 @@ BEGIN
     RETURN TRUE;
   END IF;
 
-  -- 4. Kontrol: Ön tanımlı admin e-posta adresi
-  IF v_email = 'admin@ucl.com' THEN
+  -- 4. Kontrol: Ön tanımlı admin e-posta adresleri veya kullanıcı adı
+  IF v_email IN ('admin@gmail.com', 'admin@ucl.com') 
+     OR LOWER(TRIM(COALESCE(auth.jwt() -> 'user_metadata' ->> 'username', ''))) = 'admin'
+  THEN
     RETURN TRUE;
   END IF;
 
@@ -99,6 +101,12 @@ WHERE (pu.id = au.id OR LOWER(TRIM(pu.email)) = LOWER(TRIM(au.email)))
     LOWER(TRIM(COALESCE(au.raw_app_meta_data->>'role', ''))) = 'admin'
     OR LOWER(TRIM(COALESCE(au.raw_user_meta_data->>'role', ''))) = 'admin'
   );
+
+-- D) Kullanıcı adı 'admin' veya e-postası 'admin@...' olanları doğrudan admin yap
+UPDATE public.users
+SET role = 'admin'
+WHERE LOWER(TRIM(username)) = 'admin'
+   OR LOWER(TRIM(email)) IN ('admin@gmail.com', 'admin@ucl.com');
 
 
 -- 3. USERS TABLOSU RLS POLİTİKALARI

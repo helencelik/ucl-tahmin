@@ -26,6 +26,8 @@ DROP TABLE IF EXISTS public.users CASCADE;
 CREATE TABLE public.users (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     email TEXT,
+    username TEXT,
+    display_name TEXT,
     name TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('admin', 'user')),
     total_points INTEGER NOT NULL DEFAULT 0,
@@ -33,8 +35,11 @@ CREATE TABLE public.users (
 );
 
 -- Her ihtimale karşı sütunların varlığını garanti altına alma
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS username TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS display_name TEXT;
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS total_points INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user';
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username_lower ON public.users(LOWER(username));
 
 -- ------------------------------------------------------------------------------
 -- B) MATCHES TABLOSU
@@ -146,17 +151,36 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public, auth
 AS $$
+DECLARE
+    v_username TEXT;
+    v_display_name TEXT;
 BEGIN
-    INSERT INTO public.users (id, email, name, role, total_points)
+    v_username := LOWER(TRIM(COALESCE(
+        NEW.raw_user_meta_data->>'username',
+        split_part(NEW.email, '@', 1)
+    )));
+    
+    v_display_name := TRIM(COALESCE(
+        NEW.raw_user_meta_data->>'display_name',
+        NEW.raw_user_meta_data->>'name',
+        NEW.raw_user_meta_data->>'full_name',
+        v_username
+    ));
+
+    INSERT INTO public.users (id, email, username, display_name, name, role, total_points)
     VALUES (
         NEW.id,
         NEW.email,
-        COALESCE(NEW.raw_user_meta_data->>'name', NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1)),
+        v_username,
+        v_display_name,
+        v_display_name,
         COALESCE(NEW.raw_user_meta_data->>'role', 'user'),
         0
     )
     ON CONFLICT (id) DO UPDATE
     SET email = EXCLUDED.email,
+        username = COALESCE(EXCLUDED.username, public.users.username),
+        display_name = COALESCE(EXCLUDED.display_name, public.users.display_name),
         name = COALESCE(EXCLUDED.name, public.users.name);
     RETURN NEW;
 END;
@@ -169,11 +193,13 @@ CREATE TRIGGER on_auth_user_created
     EXECUTE FUNCTION public.handle_new_user();
 
 -- Önceden auth.users'ta oluşturulmuş fakat public.users'ta kaydı olmayan kullanıcıları senkronize etme:
-INSERT INTO public.users (id, email, name, role, total_points)
+INSERT INTO public.users (id, email, username, display_name, name, role, total_points)
 SELECT 
     id, 
     email, 
-    COALESCE(raw_user_meta_data->>'name', raw_user_meta_data->>'full_name', split_part(email, '@', 1)),
+    LOWER(TRIM(COALESCE(raw_user_meta_data->>'username', split_part(email, '@', 1)))),
+    COALESCE(raw_user_meta_data->>'display_name', raw_user_meta_data->>'name', raw_user_meta_data->>'full_name', split_part(email, '@', 1)),
+    COALESCE(raw_user_meta_data->>'display_name', raw_user_meta_data->>'name', raw_user_meta_data->>'full_name', split_part(email, '@', 1)),
     COALESCE(raw_user_meta_data->>'role', 'user'),
     0
 FROM auth.users
@@ -352,14 +378,4 @@ VALUES
         'pending', 
         NULL, 
         NULL
-    ),
-    (
-        'Borussia Dortmund', 
-        'Liverpool', 
-        'https://images.fotmob.com/image_resources/logo/teamlogo/9789.png', 
-        'https://images.fotmob.com/image_resources/logo/teamlogo/8650.png', 
-        timezone('utc'::text, now() - interval '2 days'), 
-        'finished', 
-        2, 
-        1
     );
