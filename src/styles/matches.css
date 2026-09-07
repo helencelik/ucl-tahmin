@@ -14,15 +14,21 @@
    ========================================================================== */
 .predictions-page-header {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 16px;
   background: linear-gradient(135deg, rgba(14, 21, 46, 0.85), rgba(7, 11, 28, 0.95));
   border: 1px solid var(--border-glass-bright);
   border-radius: var(--radius-lg);
-  padding: 22px 24px;
+  padding: 20px 24px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.total-preds-highlight {
+  color: var(--neon-cyan);
+  font-weight: 700;
 }
 
 .predictions-page-header::after {
@@ -1398,7 +1404,7 @@
 }
 
 /* ==========================================================================
-   MOBİL VE FARKLI EKRAN BOYUTLARI UYUMLULUĞU (RESPONSIVE PERFECTION)
+   MOBİL VE FARKLI EKRAN BOYUTLARI UYUMLULUĞU (ALT ALTA VE ESNEK AKIŞ)
    ========================================================================== */
 @media (max-width: 640px) {
   .predictions-page {
@@ -1406,16 +1412,28 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    box-sizing: border-box;
   }
 
   /* Header & Başlık Alanı */
   .predictions-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     padding: 16px 14px;
     gap: 12px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .predictions-header-title-wrap {
+    flex: 1;
+    min-width: 0;
   }
 
   .predictions-page-title {
     font-size: 20px;
+    line-height: 1.2;
   }
 
   .predictions-page-subtitle {
@@ -1423,178 +1441,290 @@
     line-height: 1.4;
   }
 
-  .predictions-header-controls {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    padding-top: 12px;
-    position: relative;
-  }
-
-  .view-mode-tabs {
-    width: 100%;
-    display: flex;
-    padding: 3px;
-    box-sizing: border-box;
-  }
-
-  .view-tab-btn {
-    flex: 1;
-    justify-content: center;
-    padding: 8px 8px;
-    font-size: 12px;
-    gap: 6px;
-    white-space: nowrap;
-  }
-
   .btn-refresh-data {
-    position: absolute;
-    top: -46px;
-    right: 0;
-    width: 32px;
-    height: 32px;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
   }
 
-  /* Özet Bilgi Bandı */
-  .predictions-meta-strip {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    padding: 10px 8px;
+  /* Hafta Seçici */
+  .matchweeks-bar-wrapper {
+    padding: 5px;
+    width: 100%;
     box-sizing: border-box;
   }
 
-  .strip-divider {
-    display: none;
-  }
-
-  .strip-item {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  .strip-label {
-    font-size: 10px;
-    letter-spacing: 0.2px;
-  }
-
-  .strip-value {
-    font-size: 13px;
-    white-space: nowrap;
-  }
-
-  /* Maç Kartları */
-  .match-card {
-    padding: 14px 10px;
-    border-radius: var(--radius-md);
+  .matchweeks-scroll {
+    gap: 5px;
     width: 100%;
+  }
+
+  .week-pill-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* ========================================================================
+     MAÇ KARTI - MOBİLDE ALT ALTA VE ESNEK (FLEX/GRID) KUSURSUZ HİZALAMA
+     ======================================================================== */
+  .match-card {
+    padding: 16px 14px;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     overflow: hidden;
   }
 
   .match-card-header {
-    margin-bottom: 12px;
-    gap: 6px;
-    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 8px;
+    width: 100%;
   }
 
   .match-stage-badge {
-    font-size: 10.5px;
+    font-size: 11px;
+    white-space: nowrap;
   }
 
   .card-header-right {
-    gap: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
 
   .saved-indicator-badge {
-    font-size: 10px;
-    padding: 2px 6px;
-  }
-
-  .status-pill {
-    font-size: 10px;
+    font-size: 10.5px;
     padding: 2px 7px;
   }
 
-  /* Takım ve Skor Alanı (Mobil 3'lü esnek akış) */
-  .match-teams-grid {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    gap: 6px;
-    margin-bottom: 12px;
-    width: 100%;
+  .status-pill {
+    font-size: 10.5px;
+    padding: 2px 7px;
   }
 
+  /* Takımlar ve Skor Alanı: Mobilde ALT ALTA Akış */
+  .match-teams-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Ev Sahibi ve Deplasman Satırları */
   .team-column {
-    gap: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
     min-width: 0;
+    box-sizing: border-box;
+    text-align: left;
   }
 
   .team-logo-wrap {
-    width: 42px;
-    height: 42px;
-    padding: 4px;
+    width: 38px;
+    height: 38px;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+
+  .team-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .team-logo-fallback {
+    font-size: 13px;
   }
 
   .team-name {
-    font-size: 12px;
-    line-height: 1.15;
-    max-width: 100%;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #fff;
+    max-width: none;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.25;
   }
 
-  /* Skor Inputları */
+  /* Ortadaki Skor Giriş Alanı */
+  .match-center-arena {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 2px 0;
+  }
+
+  .prediction-inputs-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .prediction-box-header {
+    display: none; /* Mobilde görsel sadelik için gizle */
+  }
+
+  /* Skor Kutuları: Parmakla kullanım için geniş ve ergonomik */
   .score-number-inputs-wrap {
-    padding: 4px 6px;
-    gap: 4px;
-    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(4, 7, 20, 0.85);
+    border: 1px solid var(--border-glass-bright);
+    padding: 6px 14px;
+    border-radius: var(--radius-lg);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.08);
   }
 
   .score-box-input {
-    width: 38px;
-    height: 38px;
-    font-size: 19px;
-    border-radius: 6px;
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+    font-weight: 900;
+    border-radius: 8px;
   }
 
   .score-box-separator {
-    font-size: 18px;
-    padding: 0 1px;
-  }
-
-  /* Biten Maç Skoru */
-  .real-score-board {
-    padding: 6px 10px;
-    gap: 5px;
-  }
-
-  .real-score-num {
     font-size: 20px;
+    padding: 0 2px;
   }
 
-  .real-score-divider {
-    font-size: 16px;
-  }
-
-  .center-prediction-badge {
-    font-size: 10.5px;
-    padding: 2px 6px;
+  .auto-save-status-indicator {
+    min-height: 20px;
+    margin-top: 5px;
   }
 
   .auto-save-text {
-    font-size: 10.5px;
+    font-size: 11px;
   }
 
-  /* Kart Alt Bilgileri (Tarih ve Stadyum) */
+  /* Biten Maç Gerçek Skoru */
+  .real-score-board {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: rgba(4, 7, 20, 0.85);
+    border-radius: var(--radius-md);
+  }
+
+  .real-score-num {
+    font-size: 24px;
+  }
+
+  .real-score-divider {
+    font-size: 18px;
+  }
+
+  .center-prediction-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+
+  /* Kilitli Maç */
+  .locked-badge {
+    padding: 6px 16px;
+    font-size: 12px;
+  }
+
+  .match-locked-notice {
+    font-size: 11px;
+    padding: 6px 10px;
+    margin: 4px 0 8px;
+  }
+
+  /* Kazanılan Puan Bandı */
+  .finished-points-banner {
+    padding: 8px 10px;
+    margin-top: 8px;
+    border-radius: var(--radius-md);
+  }
+
+  .points-badge {
+    font-size: 11.5px;
+    padding: 4px 10px;
+  }
+
+  /* Alt Bilgiler: Tarih ve Stadyum */
+  .match-card-meta-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .meta-item-left,
+  .meta-item-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: var(--text-dim);
+  }
+}
+
+/* Küçük Telefon Ekranları (Örn: iPhone SE, Galaxy A serisi, < 400px) */
+@media (max-width: 400px) {
+  .match-card {
+    padding: 14px 10px;
+  }
+
+  .team-column {
+    gap: 8px;
+  }
+
+  .team-logo-wrap {
+    width: 34px;
+    height: 34px;
+    padding: 3px;
+  }
+
+  .team-name {
+    font-size: 13.5px;
+  }
+
+  .score-box-input {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .score-number-inputs-wrap {
+    padding: 5px 12px;
+    gap: 6px;
+  }
+
   .match-card-meta-bottom {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
-    padding-top: 8px;
-    margin-top: 8px;
   }
 
   .meta-item-left,
@@ -1604,64 +1734,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .finished-points-banner {
-    padding: 6px 8px;
-    margin-top: 8px;
-  }
-
-  .points-badge {
-    font-size: 11px;
-    padding: 3px 8px;
-  }
-}
-
-/* Küçük Telefon Ekranları (Örn: iPhone SE, Galaxy A, Ekran < 400px) */
-@media (max-width: 400px) {
-  .match-card {
-    padding: 12px 8px;
-  }
-
-  .match-teams-grid {
-    gap: 3px;
-  }
-
-  .team-logo-wrap {
-    width: 36px;
-    height: 36px;
-    padding: 3px;
-  }
-
-  .team-name {
-    font-size: 11px;
-    line-height: 1.1;
-  }
-
-  .score-number-inputs-wrap {
-    padding: 3px 4px;
-    gap: 3px;
-  }
-
-  .score-box-input {
-    width: 33px;
-    height: 33px;
-    font-size: 16px;
-    border-radius: 5px;
-  }
-
-  .score-box-separator {
-    font-size: 15px;
-  }
-
-  .auto-save-text {
-    font-size: 9.5px;
-    gap: 3px;
-  }
-
-  .view-tab-btn {
-    font-size: 11px;
-    padding: 7px 4px;
   }
 }
 
