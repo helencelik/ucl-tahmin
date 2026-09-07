@@ -7,7 +7,10 @@ import {
   RefreshCw,
   Target,
   Trophy,
-  Layers
+  Layers,
+  Calendar,
+  CheckCircle2,
+  Sparkles
 } from 'lucide-react';
 
 export const PredictionsPage: React.FC = () => {
@@ -80,6 +83,12 @@ export const PredictionsPage: React.FC = () => {
   // Toplam yapılan tahmin sayısı
   const totalPredictionsCount = Object.keys(predictions).length;
 
+  // Doğru tahmin sayısı (points_earned > 0)
+  const userPredList = Object.values(predictions);
+  const correctPredictionsCount = userPredList.filter(
+    (p) => (p.points_earned || 0) > 0
+  ).length;
+
   return (
     <div className="predictions-page">
       {/* 1. SADE VE ŞIK BAŞLIK ALANI */}
@@ -91,9 +100,10 @@ export const PredictionsPage: React.FC = () => {
           </div>
           <h1 className="predictions-page-title">Tahminlerim</h1>
           <p className="predictions-page-subtitle">
-            Skor tahminlerinizi girin; her iki taraf yazıldığında arka planda otomatik olarak kaydedilir.
-            {totalPredictionsCount > 0 && (
-              <span className="total-preds-highlight"> (Toplam {totalPredictionsCount} kayıtlı tahmininiz var)</span>
+            {totalPredictionsCount > 0 ? (
+              <span>Toplam <strong>{totalPredictionsCount}</strong> kayıtlı tahmininiz var.</span>
+            ) : (
+              <span>Skor tahminlerinizi girin, otomatik kaydedilir.</span>
             )}
           </p>
         </div>
@@ -108,6 +118,71 @@ export const PredictionsPage: React.FC = () => {
           <RefreshCw size={16} />
         </button>
       </div>
+
+      {/* 2. 4 TEMEL İSTATİSTİK KARTI */}
+      <section className="home-stats-section" style={{ marginBottom: 4 }}>
+        <div className="stats-grid">
+          {/* 1) Toplam Maç */}
+          <div className="stat-card">
+            <div className="stat-card-header">
+              <span className="stat-label">Toplam Maç</span>
+              <div className="stat-icon-wrapper blue">
+                <Calendar size={17} />
+              </div>
+            </div>
+            <div className="stat-number">
+              {loading ? '-' : matches.length}
+            </div>
+            <span className="stat-sub">Fikstürdeki maçlar</span>
+          </div>
+
+          {/* 2) Yapılan Tahmin */}
+          <div className="stat-card">
+            <div className="stat-card-header">
+              <span className="stat-label">Yapılan Tahmin</span>
+              <div className="stat-icon-wrapper cyan">
+                <Target size={17} />
+              </div>
+            </div>
+            <div className="stat-number cyan">
+              {loading ? '-' : totalPredictionsCount}
+            </div>
+            <span className="stat-sub">
+              {matches.length > 0
+                ? `${Math.round((totalPredictionsCount / matches.length) * 100)}% tamamlandı`
+                : 'Kayıtlı tahminler'}
+            </span>
+          </div>
+
+          {/* 3) Doğru Tahmin */}
+          <div className="stat-card">
+            <div className="stat-card-header">
+              <span className="stat-label">Doğru Tahmin</span>
+              <div className="stat-icon-wrapper green">
+                <CheckCircle2 size={17} />
+              </div>
+            </div>
+            <div className="stat-number green">
+              {loading ? '-' : correctPredictionsCount}
+            </div>
+            <span className="stat-sub">Puan getiren tahminler</span>
+          </div>
+
+          {/* 4) Toplam Puan */}
+          <div className="stat-card">
+            <div className="stat-card-header">
+              <span className="stat-label">Toplam Puan</span>
+              <div className="stat-icon-wrapper gold">
+                <Sparkles size={17} />
+              </div>
+            </div>
+            <div className="stat-number gold">
+              {loading ? '-' : (user?.total_points ?? 0)}
+            </div>
+            <span className="stat-sub">Kazanılan toplam puan</span>
+          </div>
+        </div>
+      </section>
 
       {/* 2. HAFTA SEÇİCİSİ (1 - 8 HAFTA & TÜMÜ) */}
       <div className="matchweeks-bar-wrapper">

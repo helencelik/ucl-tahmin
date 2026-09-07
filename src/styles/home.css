@@ -6,11 +6,19 @@
 .home-page {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 24px 16px 80px 16px;
+  padding: 20px 16px 80px 16px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 20px;
   position: relative;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .home-page {
+    padding: 14px 12px 80px 12px;
+    gap: 16px;
+  }
 }
 
 /* 1. HERO BAŞLIK KARTI */
@@ -19,9 +27,17 @@
   background: linear-gradient(135deg, rgba(14, 21, 46, 0.85) 0%, rgba(10, 17, 40, 0.95) 100%);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-lg);
-  padding: 32px 28px;
+  padding: 18px 20px;
   overflow: hidden;
   box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .home-hero-card {
+    padding: 14px 14px;
+    border-radius: var(--radius-md);
+  }
 }
 
 .home-hero-bg-glow {
@@ -40,7 +56,7 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .home-hero-top-row {
@@ -48,7 +64,7 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .home-league-tag {
@@ -57,12 +73,12 @@
   gap: 6px;
   background: rgba(0, 242, 254, 0.12);
   border: 1px solid rgba(0, 242, 254, 0.3);
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
   color: var(--neon-cyan);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11.5px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -70,12 +86,12 @@
 .home-user-tag {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border-glass-bright);
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: var(--radius-full);
-  font-size: 13px;
+  font-size: 12.5px;
   color: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
@@ -92,11 +108,12 @@
 
 .home-hero-title {
   font-family: var(--font-heading);
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 900;
   letter-spacing: -0.5px;
-  line-height: 1.2;
+  line-height: 1.25;
   color: #fff;
+  margin: 0;
   background: linear-gradient(135deg, #ffffff 40%, var(--neon-cyan) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -104,90 +121,64 @@
 
 @media (max-width: 640px) {
   .home-hero-title {
-    font-size: 24px;
+    font-size: 20px;
   }
 }
 
 .home-hero-subtext {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-muted);
-  line-height: 1.6;
+  line-height: 1.5;
   max-width: 720px;
 }
 
-/* 2. TAHMİNLERİM & ÖZET BÖLÜMÜ */
-.home-summary-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* 2. DÜZGÜN ESNEK 4 ADET İSTATİSTİK KARTI */
+.home-stats-section {
+  width: 100%;
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.section-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.section-title-icon {
-  color: var(--neon-cyan);
-}
-
-.section-title {
-  font-family: var(--font-heading);
-  font-size: 20px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 0.3px;
-}
-
-.section-subtitle {
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
-/* İSTATİSTİK KARTLARI GRİDİ (5 KART) */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 14px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .stats-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 380px) {
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
 .stat-card {
   position: relative;
-  background: rgba(14, 21, 46, 0.7);
+  background: rgba(14, 21, 46, 0.75);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
-  padding: 18px 16px;
+  padding: 13px 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   transition: all 0.25s ease;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .stat-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: rgba(0, 242, 254, 0.4);
   background: rgba(20, 31, 68, 0.85);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.15);
@@ -197,15 +188,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
 }
 
 .stat-icon-wrapper {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .stat-icon-wrapper.blue {
@@ -240,10 +234,11 @@
 
 .stat-number {
   font-family: var(--font-heading);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 900;
   color: #fff;
   line-height: 1.1;
+  letter-spacing: -0.5px;
 }
 
 .stat-number.gold {
@@ -254,15 +249,34 @@
   color: var(--neon-cyan);
 }
 
+.stat-number.green {
+  color: var(--success);
+}
+
 .stat-label {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .stat-sub {
   font-size: 11px;
   color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.home-matches-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 }
 
 /* 3. HIZLI GEÇİŞ KARTLARI (ACTION CARDS) */
