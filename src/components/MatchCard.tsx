@@ -234,7 +234,7 @@ const MatchCardComponent: React.FC<MatchCardProps> = ({
               ) : (
                 <>
                   {/* Sadece Rakam Kabul Eden Number Input Bileşenleri */}
-                  <div className="score-number-inputs-wrap">
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                     <input
                       type="number"
                       inputMode="numeric"
@@ -292,11 +292,6 @@ const MatchCardComponent: React.FC<MatchCardProps> = ({
                       <span className="auto-save-text synced">
                         <Check size={11} />
                         Kayıtlı Tahmin
-                      </span>
-                    )}
-                    {saveStatus === 'idle' && !hasExisting && (homeScore === '' || awayScore === '') && (
-                      <span className="auto-save-text hint">
-                        Skorları girin (otomatik kaydeder)
                       </span>
                     )}
                   </div>

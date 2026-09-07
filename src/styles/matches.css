@@ -454,23 +454,6 @@
 }
 
 /* Clean Number Inputs for Auto-Save */
-.score-number-inputs-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: rgba(5, 8, 24, 0.8);
-  border: 1px solid var(--border-glass-bright);
-  padding: 6px 14px;
-  border-radius: var(--radius-lg);
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
-  transition: all 0.25s ease;
-}
-
-.score-number-inputs-wrap:focus-within {
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.25), inset 0 2px 6px rgba(0, 0, 0, 0.5);
-}
 
 .score-box-input {
   width: 44px;
@@ -1584,18 +1567,6 @@
     display: none; /* Mobilde görsel sadelik için gizle */
   }
 
-  /* Skor Kutuları: Parmakla kullanım için geniş ve ergonomik */
-  .score-number-inputs-wrap {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: rgba(4, 7, 20, 0.85);
-    border: 1px solid var(--border-glass-bright);
-    padding: 6px 14px;
-    border-radius: var(--radius-lg);
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.08);
-  }
 
   .score-box-input {
     width: 44px;
@@ -1716,10 +1687,6 @@
     font-size: 20px;
   }
 
-  .score-number-inputs-wrap {
-    padding: 5px 12px;
-    gap: 6px;
-  }
 
   .match-card-meta-bottom {
     flex-direction: column;

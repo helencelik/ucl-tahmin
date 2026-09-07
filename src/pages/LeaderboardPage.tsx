@@ -7,27 +7,19 @@ import {
   Trophy,
   Crown,
   Medal,
-  RefreshCw,
   Sparkles,
   Award,
-  Target,
-  AlertCircle,
-  Search,
-  Flame,
-  ShieldAlert
+  Search
 } from 'lucide-react';
 
 export const LeaderboardPage: React.FC = () => {
   const { user } = useAuth();
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const fetchLeaderboardData = async (isSilent = false) => {
-    if (!isSilent) setLoading(true);
-    else setRefreshing(true);
-
+  const fetchLeaderboardData = async () => {
+    setLoading(true);
     try {
       const data = await getLeaderboard();
       // Admin kullanıcıların sıralamada yer almadığından emin ol
@@ -36,15 +28,12 @@ export const LeaderboardPage: React.FC = () => {
       console.error('Liderlik verisi alınamadı:', err);
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   };
 
   useEffect(() => {
     fetchLeaderboardData();
   }, []);
-
-  const isCurrentUserAdmin = isUserAdmin(user);
 
   // Filtreleme (Adminler kesinlikle liderlik tablosunda yer almaz + Arama)
   const filteredUsers = leaderboard
@@ -60,15 +49,6 @@ export const LeaderboardPage: React.FC = () => {
   const top1 = leaderboard[0];
   const top2 = leaderboard[1];
   const top3 = leaderboard[2];
-
-  // Aktif kullanıcının tablodaki sırası (Yönetici ise sıralamaya girmez)
-  const currentUserEntry = isCurrentUserAdmin
-    ? undefined
-    : leaderboard.find((u) => u.id === user?.id || (user?.username && u.username === user.username));
-  const currentUserRank = currentUserEntry?.rank || 0;
-
-  // En çok tam skor bilen katılımcı
-  const maxExactUser = [...leaderboard].sort((a, b) => (b.exact_scores_count || 0) - (a.exact_scores_count || 0))[0];
   const highestPoints = top1?.total_points || 25;
 
   return (
@@ -79,72 +59,7 @@ export const LeaderboardPage: React.FC = () => {
           <Trophy size={42} className="trophy-icon" />
         </div>
         <h1 className="hero-title">ŞAMPİYONLAR LİGİ PUAN SIRALAMASI</h1>
-        <p className="hero-subtitle">
-          Tam Skor: <strong>4 Puan</strong> • Gol Farkı: <strong>3 Puan</strong> • Doğru Sonuç: <strong>2 Puan</strong>
-        </p>
-
-        <button
-          className={`btn-refresh-leaderboard ${refreshing ? 'spinning' : ''}`}
-          onClick={() => fetchLeaderboardData(true)}
-          title="Tabloyu Yenile"
-        >
-          <RefreshCw size={15} />
-          <span>Yenile</span>
-        </button>
       </div>
-
-      {/* 2. Hızlı Özet KPI Kartları (Zirve, En Çok Tam Skor, Kendi Sıranız) */}
-      {!loading && leaderboard.length > 0 && (
-        <section className="leaderboard-kpi-row">
-          {/* Lider Kartı */}
-          <div className="lead-kpi-card gold-border">
-            <div className="kpi-icon-pill gold">
-              <Crown size={18} />
-            </div>
-            <div className="kpi-content">
-              <span className="kpi-label">Zirvedeki Lider</span>
-              <span className="kpi-value-name">{top1?.display_name || top1?.name || '-'}</span>
-              <span className="kpi-sub">{top1?.total_points || 0} Puan</span>
-            </div>
-          </div>
-
-          {/* En Çok Tam Skor */}
-          <div className="lead-kpi-card purple-border">
-            <div className="kpi-icon-pill purple">
-              <Award size={18} />
-            </div>
-            <div className="kpi-content">
-              <span className="kpi-label">Tam Skor Lideri</span>
-              <span className="kpi-value-name">{maxExactUser?.display_name || maxExactUser?.name || '-'}</span>
-              <span className="kpi-sub">{maxExactUser?.exact_scores_count || 0} Tam Skor (4p)</span>
-            </div>
-          </div>
-
-          {/* Kendi Durumunuz */}
-          <div className="lead-kpi-card cyan-border">
-            <div className="kpi-icon-pill cyan">
-              <Flame size={18} />
-            </div>
-            <div className="kpi-content">
-              <span className="kpi-label">Sizin Sıranız</span>
-              <span className="kpi-value-name">
-                {isCurrentUserAdmin
-                  ? 'Yönetici (Yarışma Dışı)'
-                  : currentUserRank > 0
-                  ? `${currentUserRank}. Sıradasınız`
-                  : 'Sıralamada Yok'}
-              </span>
-              <span className="kpi-sub">
-                {isCurrentUserAdmin
-                  ? 'Admin hesabı puan tablosuna dahil edilmez'
-                  : currentUserEntry
-                  ? `${currentUserEntry.total_points} Puan`
-                  : '0 Puan'}
-              </span>
-            </div>
-          </div>
-        </section>
-      )}
 
       {loading ? (
         <div className="leaderboard-loader">
@@ -279,63 +194,6 @@ export const LeaderboardPage: React.FC = () => {
                 />
               ))
             )}
-          </div>
-
-          {/* 6. Puanlama Kuralları ve Zaman Uyarısı Kartı */}
-          <div className="scoring-rules-footer-card">
-            <div className="rules-card-header">
-              <Trophy size={18} className="rules-trophy-icon" />
-              <h4>Puan Sistemi ve Kurallar</h4>
-            </div>
-
-            <div className="rules-timing-alert">
-              <AlertCircle size={16} className="rules-timing-icon" />
-              <span className="rules-timing-text">
-                "Tahminlerinizi maç başlamadan yapın; maç başladıktan sonra tahmin girişi veya değişikliği yapılamaz."
-              </span>
-            </div>
-
-            <div className="rules-grid-badges">
-              <div className="rule-badge-item rule-exact">
-                <div className="badge-icon-area gold">
-                  <Award size={18} />
-                </div>
-                <div className="badge-text-area">
-                  <div className="badge-title">Tam Skor (4 Puan)</div>
-                  <div className="badge-desc">Maç skoru tam olarak bilinirse (Örn: Maç 3-1, Tahmin 3-1).</div>
-                </div>
-              </div>
-
-              <div className="rule-badge-item rule-diff">
-                <div className="badge-icon-area purple">
-                  <Target size={18} />
-                </div>
-                <div className="badge-text-area">
-                  <div className="badge-title">Gol Farkı (3 Puan)</div>
-                  <div className="badge-desc">Skor tam bilinmese bile fark doğruysa (Örn: Maç 4-2, Tahmin 2-0).</div>
-                </div>
-              </div>
-
-              <div className="rule-badge-item rule-result">
-                <div className="badge-icon-area cyan">
-                  <Sparkles size={18} />
-                </div>
-                <div className="badge-text-area">
-                  <div className="badge-title">Doğru Sonuç (2 Puan)</div>
-                  <div className="badge-desc">Yalnızca kazanan veya beraberlik bilinirse (Örn: Maç 2-0, Tahmin 3-2).</div>
-                </div>
-              </div>
-
-              <div className="rule-badge-item rule-zero">
-                <div className="badge-icon-area muted">
-                  <ShieldAlert size={18} />
-                </div>
-                <div className="badge-text-area">
-                  <div className="badge-title">Yanlış / Boş (0 Puan)</div>
-                  <div className="badge-desc">Yanlış tahmin veya maç saatine kadar tahmin yapılmamışsa.</div>
-                </div>
-              </div>
-            </div>
           </div>
         </>
       )}
