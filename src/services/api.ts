@@ -2097,6 +2097,61 @@ export async function getMatches(): Promise<Match[]> {
 }
 
 // ==========================================
+// PUANLAMA KURALLARI (4 - 3 - 2 - 0 SİSTEMİ)
+// ==========================================
+/**
+ * 4 - 3 - 2 - 0 Puanlama Kuralı (Sıralı Öncelik Mantığı):
+ * 1. ÖNCELİK: Tam Skor (Exact Match) -> 4 PUAN
+ * 2. ÖNCELİK: Skor / Gol Farkı İsabeti (Goal Difference Match) -> 3 PUAN
+ * 3. ÖNCELİK: Maçın Kazananı / Beraberlik (Outcome Match) -> 2 PUAN
+ * 4. ÖNCELİK: Yanlış Tahmin -> 0 PUAN
+ */
+export function calculatePredictionPoints(
+  predHome: number | string | null | undefined,
+  predAway: number | string | null | undefined,
+  realHome: number | string | null | undefined,
+  realAway: number | string | null | undefined
+): number {
+  if (
+    predHome === null || predHome === undefined || predHome === '' ||
+    predAway === null || predAway === undefined || predAway === '' ||
+    realHome === null || realHome === undefined || realHome === '' ||
+    realAway === null || realAway === undefined || realAway === ''
+  ) {
+    return 0;
+  }
+
+  const pH = Number(predHome);
+  const pA = Number(predAway);
+  const rH = Number(realHome);
+  const rA = Number(realAway);
+
+  if (isNaN(pH) || isNaN(pA) || isNaN(rH) || isNaN(rA)) {
+    return 0;
+  }
+
+  // 1. ÖNCELİK: Tam Skor Bildimi (Exact Match) -> 4 PUAN
+  if (pH === rH && pA === rA) {
+    return 4;
+  }
+
+  // 2. ÖNCELİK: Skor / Gol Farkı İsabeti (Goal Difference Match) -> 3 PUAN
+  const predDiff = pH - pA;
+  const realDiff = rH - rA;
+  if (predDiff === realDiff) {
+    return 3;
+  }
+
+  // 3. ÖNCELİK: Maçın Kazananı veya Beraberlik Durumu (Outcome Match) -> 2 PUAN
+  if (Math.sign(predDiff) === Math.sign(realDiff)) {
+    return 2;
+  }
+
+  // 4. Yanlış Tahmin -> 0 PUAN
+  return 0;
+}
+
+// ==========================================
 // TAHMİN İŞLEMLERİ (PREDICTIONS)
 // ==========================================
 export async function getUserPredictions(userId: string): Promise<Record<string, Prediction>> {
@@ -2116,7 +2171,7 @@ export async function getUserPredictions(userId: string): Promise<Record<string,
     return localMap;
   }
 
-  // 2. Supabase'den çekmeyi dene
+  // 2. Supabase'den çek
   try {
     const { data, error } = await supabase
       .from('predictions')
@@ -2238,7 +2293,6 @@ const LS_LEADERBOARD_KEY = 'ucl_demo_leaderboard';
 // LİDERLİK TABLOSU (LEADERBOARD)
 // ==========================================
 export async function getLeaderboard(): Promise<LeaderboardUser[]> {
-  // Eski sahte demo önbelleğini derhal temizle
   try {
     localStorage.removeItem(LS_LEADERBOARD_KEY);
   } catch {}
@@ -2248,8 +2302,8 @@ export async function getLeaderboard(): Promise<LeaderboardUser[]> {
   }
 
   try {
-    // Sadece Supabase public.users tablosundaki gerçek kullanıcıları çek
-    const { data, error } = await supabase
+    // 1. Sadece Supabase public.users tablosundaki gerçek kullanıcıları çek
+    const { data: usersData, error } = await supabase
       .from('users')
       .select('*')
       .order('total_points', { ascending: false });
@@ -2259,11 +2313,11 @@ export async function getLeaderboard(): Promise<LeaderboardUser[]> {
       return [];
     }
 
-    if (!data || data.length === 0) {
+    if (!usersData || usersData.length === 0) {
       return [];
     }
 
-    // Kullanıcıların tahmin istatistiklerini çekme
+    // 2. Kullanıcıların tahmin istatistiklerini çekme
     const { data: allPreds } = await supabase
       .from('predictions')
       .select('user_id, points_earned');
@@ -2280,7 +2334,7 @@ export async function getLeaderboard(): Promise<LeaderboardUser[]> {
       else if (item.points_earned === 2) resultCountMap[item.user_id] = (resultCountMap[item.user_id] || 0) + 1;
     });
 
-    const mappedUsers: LeaderboardUser[] = data.map((user) => {
+    const mappedUsers: LeaderboardUser[] = usersData.map((user) => {
       const exact = exactCountMap[user.id] || 0;
       const diff = diffCountMap[user.id] || 0;
       const result = resultCountMap[user.id] || 0;
@@ -2321,40 +2375,6 @@ export async function getLeaderboard(): Promise<LeaderboardUser[]> {
     console.error('Liderlik tablosu çekilemedi:', err);
     return [];
   }
-}
-
-/**
- * 4 - 3 - 2 - 0 Puanlama Kuralı (Sıralı Öncelik Mantığı):
- * 1. ÖNCELİK: Tam Skor (Exact Match) -> 4 PUAN
- * 2. ÖNCELİK: Skor / Gol Farkı İsabeti (Goal Difference Match) -> 3 PUAN
- * 3. ÖNCELİK: Maçın Kazananı / Beraberlik (Outcome Match) -> 2 PUAN
- * 4. ÖNCELİK: Yanlış Tahmin -> 0 PUAN
- */
-export function calculatePredictionPoints(
-  predHome: number,
-  predAway: number,
-  realHome: number,
-  realAway: number
-): number {
-  // 1. ÖNCELİK: Tam Skor Bildimi (Exact Match)
-  if (predHome === realHome && predAway === realAway) {
-    return 4;
-  }
-
-  // 2. ÖNCELİK: Skor / Gol Farkı İsabeti (Goal Difference Match)
-  const predDiff = predHome - predAway;
-  const realDiff = realHome - realAway;
-  if (predDiff === realDiff) {
-    return 3;
-  }
-
-  // 3. ÖNCELİK: Maçın Kazananı veya Beraberlik Durumu (Outcome Match)
-  if (Math.sign(predDiff) === Math.sign(realDiff)) {
-    return 2;
-  }
-
-  // 4. Yanlış Tahmin
-  return 0;
 }
 
 // ==========================================
@@ -2443,45 +2463,6 @@ export async function updateMatchResult(
     throw error;
   }
 
-  // Supabase üzerinde otomatik istemci puan hesaplama güvencesi (Trigger olmasa bile puanları garanti hesaplar)
-  try {
-    const { data: preds } = await supabase
-      .from('predictions')
-      .select('id, user_id, predicted_home_score, predicted_away_score')
-      .eq('match_id', cleanMatchId);
-
-    if (preds && preds.length > 0) {
-      for (const p of preds) {
-        const pts = calculatePredictionPoints(
-          p.predicted_home_score,
-          p.predicted_away_score,
-          realHomeScore,
-          realAwayScore
-        );
-        await supabase
-          .from('predictions')
-          .update({ points_earned: pts })
-          .eq('id', p.id);
-      }
-
-      // Kullanıcıların toplam puanlarını hesapla ve users tablosunda güncelle
-      const affectedUserIds = [...new Set(preds.map((p) => p.user_id))];
-      for (const uid of affectedUserIds) {
-        const { data: userPreds } = await supabase
-          .from('predictions')
-          .select('points_earned')
-          .eq('user_id', uid);
-
-        const total = (userPreds || []).reduce((sum, item) => sum + (item.points_earned || 0), 0);
-        await supabase
-          .from('users')
-          .update({ total_points: total })
-          .eq('id', uid);
-      }
-    }
-  } catch (syncErr) {
-    console.warn('[updateMatchResult] Puan hesaplama güvence bloğu uyarısı:', syncErr);
-  }
 }
 
 export async function createMatch(matchData: {
