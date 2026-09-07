@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Match, Prediction } from '../types';
 import {
   Calendar,
-  CheckCircle2,
   AlertCircle,
   Award,
   Sparkles,
@@ -11,7 +10,6 @@ import {
   ChevronUp,
   MapPin,
   RefreshCw,
-  Save,
   Lock,
   Check
 } from 'lucide-react';
@@ -28,13 +26,21 @@ export const MatchCard: React.FC<MatchCardProps> = ({
   userPrediction,
   onSavePrediction
 }) => {
-  const [homeScore, setHomeScore] = useState<number>(userPrediction?.predicted_home_score ?? 0);
-  const [awayScore, setAwayScore] = useState<number>(userPrediction?.predicted_away_score ?? 0);
-  
-  // Kayıt durumu: 'idle' | 'saving' | 'saved' | 'error'
+  // Skorlar: Kullanıcı rahatça silip yazabilsin diye string olarak tutulur
+  const [homeScore, setHomeScore] = useState<string>(
+    userPrediction !== undefined && userPrediction !== null
+      ? String(userPrediction.predicted_home_score)
+      : ''
+  );
+  const [awayScore, setAwayScore] = useState<string>(
+    userPrediction !== undefined && userPrediction !== null
+      ? String(userPrediction.predicted_away_score)
+      : ''
+  );
+
+  // Otomatik kayıt durumu: 'idle' | 'saving' | 'saved' | 'error'
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const [saveFeedbackMsg, setSaveFeedbackMsg] = useState('');
-  
+
   const [showAllPredictions, setShowAllPredictions] = useState(false);
   const [allPredictions, setAllPredictions] = useState<Prediction[]>([]);
   const [loadingPredictions, setLoadingPredictions] = useState(false);
@@ -47,43 +53,49 @@ export const MatchCard: React.FC<MatchCardProps> = ({
   // Dışarıdan gelen tahmin değiştiğinde senkronize et
   useEffect(() => {
     if (userPrediction) {
-      setHomeScore(userPrediction.predicted_home_score);
-      setAwayScore(userPrediction.predicted_away_score);
+      setHomeScore(String(userPrediction.predicted_home_score));
+      setAwayScore(String(userPrediction.predicted_away_score));
     }
-  }, [userPrediction]);
+  }, [userPrediction?.predicted_home_score, userPrediction?.predicted_away_score]);
 
-  // Skorlarda değişiklik var mı kontrolü
-  const hasExisting = userPrediction !== undefined && userPrediction !== null;
-  const isScoreChanged = !hasExisting ||
-    userPrediction.predicted_home_score !== homeScore ||
-    userPrediction.predicted_away_score !== awayScore;
-
-  // Manuel "Tahmini Kaydet" Butonu Tetikleyicisi
-  const handleSavePredictionClick = async () => {
+  // OTOMATİK KAYDETME (AUTO-SAVE) MANTIĞI:
+  // Kullanıcı hem ev sahibi hem deplasman skorunu girdiğinde arka planda otomatik kaydeder
+  useEffect(() => {
     if (isLocked) return;
+    if (homeScore === '' || awayScore === '') return;
+
+    const h = parseInt(homeScore, 10);
+    const a = parseInt(awayScore, 10);
+    if (isNaN(h) || isNaN(a) || h < 0 || a < 0) return;
+
+    // Eğer zaten kaydedilmiş tahminle birebir aynıysa tekrar kaydetme
+    if (
+      userPrediction &&
+      userPrediction.predicted_home_score === h &&
+      userPrediction.predicted_away_score === a
+    ) {
+      return;
+    }
 
     setSaveStatus('saving');
-    setSaveFeedbackMsg('');
+    const timer = setTimeout(async () => {
+      try {
+        await onSavePrediction(match.id, h, a);
+        setSaveStatus('saved');
+        setTimeout(() => {
+          setSaveStatus('idle');
+        }, 2200);
+      } catch (err) {
+        console.error('Otomatik kayıt hatası:', err);
+        setSaveStatus('error');
+        setTimeout(() => {
+          setSaveStatus('idle');
+        }, 3000);
+      }
+    }, 600);
 
-    try {
-      await onSavePrediction(match.id, homeScore, awayScore);
-      setSaveStatus('saved');
-      setSaveFeedbackMsg('Tahmin başarıyla kaydedildi!');
-
-      // 3 saniye sonra 'saved' durumunu normale çevir
-      setTimeout(() => {
-        setSaveStatus('idle');
-        setSaveFeedbackMsg('');
-      }, 3000);
-    } catch (err: any) {
-      console.error('Tahmin kayıt hatası:', err);
-      setSaveStatus('error');
-      setSaveFeedbackMsg(err?.message || 'Tahmin kaydedilemedi. Lütfen tekrar deneyin.');
-      setTimeout(() => {
-        setSaveStatus('idle');
-      }, 4000);
-    }
-  };
+    return () => clearTimeout(timer);
+  }, [homeScore, awayScore, isLocked, match.id]);
 
   const handleToggleAllPredictions = async () => {
     if (!showAllPredictions && allPredictions.length === 0) {
@@ -94,6 +106,44 @@ export const MatchCard: React.FC<MatchCardProps> = ({
     }
     setShowAllPredictions(!showAllPredictions);
   };
+
+  // Sadece rakam kabul eden tuş kontrolü
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key) ||
+      e.ctrlKey ||
+      e.metaKey
+    ) {
+      return;
+    }
+    // Rakam harici girişleri (e, +, -, nokta, virgül vb.) engelle
+    if (!/^[0-9]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  // Sadece rakam filtreleme
+  const handleHomeScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, '');
+    if (digits === '') {
+      setHomeScore('');
+    } else {
+      const num = parseInt(digits, 10);
+      setHomeScore(String(Math.min(20, num)));
+    }
+  };
+
+  const handleAwayScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, '');
+    if (digits === '') {
+      setAwayScore('');
+    } else {
+      const num = parseInt(digits, 10);
+      setAwayScore(String(Math.min(20, num)));
+    }
+  };
+
+  const hasExisting = userPrediction !== undefined && userPrediction !== null;
 
   // Tarih biçimlendirme (Türkçe)
   const formattedDate = matchDate.toLocaleDateString('tr-TR', {
@@ -177,82 +227,78 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               {isLocked ? (
                 <div className="locked-badge">
                   <Lock size={13} />
-                  <span>Kilitlendi: {homeScore} - {awayScore}</span>
+                  <span>Kilitlendi: {homeScore || '0'} - {awayScore || '0'}</span>
                 </div>
               ) : (
-                <div className="score-inputs-row">
-                  {/* Home Score Counter */}
-                  <div className="counter-col">
-                    <button
-                      type="button"
-                      className="counter-btn"
-                      onClick={() => setHomeScore(Math.max(0, homeScore - 1))}
-                      disabled={isLocked || homeScore <= 0}
-                      aria-label="Ev Sahibi Skoru Azalt"
-                    >
-                      -
-                    </button>
+                <>
+                  {/* Sadece Rakam Kabul Eden Number Input Bileşenleri */}
+                  <div className="score-number-inputs-wrap">
                     <input
                       type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       min="0"
                       max="20"
-                      className="score-input"
+                      className={`score-box-input ${saveStatus === 'saved' ? 'saved-pulse' : ''}`}
+                      placeholder="-"
                       value={homeScore}
-                      onChange={(e) => {
-                        const val = parseInt(e.target.value);
-                        setHomeScore(isNaN(val) ? 0 : Math.max(0, Math.min(20, val)));
-                      }}
+                      onChange={handleHomeScoreChange}
+                      onKeyDown={handleKeyDown}
                       disabled={isLocked}
-                      aria-label="Ev Sahibi Skor Tahmini"
+                      aria-label={`${match.home_team} Skor Tahmini`}
                     />
-                    <button
-                      type="button"
-                      className="counter-btn"
-                      onClick={() => setHomeScore(Math.min(20, homeScore + 1))}
-                      disabled={isLocked}
-                      aria-label="Ev Sahibi Skoru Artır"
-                    >
-                      +
-                    </button>
-                  </div>
 
-                  <span className="inputs-divider">:</span>
+                    <span className="score-box-separator">:</span>
 
-                  {/* Away Score Counter */}
-                  <div className="counter-col">
-                    <button
-                      type="button"
-                      className="counter-btn"
-                      onClick={() => setAwayScore(Math.max(0, awayScore - 1))}
-                      disabled={isLocked || awayScore <= 0}
-                      aria-label="Deplasman Skoru Azalt"
-                    >
-                      -
-                    </button>
                     <input
                       type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       min="0"
                       max="20"
-                      className="score-input"
+                      className={`score-box-input ${saveStatus === 'saved' ? 'saved-pulse' : ''}`}
+                      placeholder="-"
                       value={awayScore}
-                      onChange={(e) => {
-                        const val = parseInt(e.target.value);
-                        setAwayScore(isNaN(val) ? 0 : Math.max(0, Math.min(20, val)));
-                      }}
+                      onChange={handleAwayScoreChange}
+                      onKeyDown={handleKeyDown}
                       disabled={isLocked}
-                      aria-label="Deplasman Skor Tahmini"
+                      aria-label={`${match.away_team} Skor Tahmini`}
                     />
-                    <button
-                      type="button"
-                      className="counter-btn"
-                      onClick={() => setAwayScore(Math.min(20, awayScore + 1))}
-                      disabled={isLocked}
-                      aria-label="Deplasman Skoru Artır"
-                    >
-                      +
-                    </button>
                   </div>
-                </div>
+
+                  {/* Arka Planda Otomatik Kaydetme Durum Göstergesi */}
+                  <div className="auto-save-status-indicator">
+                    {saveStatus === 'saving' && (
+                      <span className="auto-save-text saving">
+                        <RefreshCw size={11} className="spinning" />
+                        Kaydediliyor...
+                      </span>
+                    )}
+                    {saveStatus === 'saved' && (
+                      <span className="auto-save-text saved">
+                        <Check size={11} />
+                        Otomatik Kaydedildi
+                      </span>
+                    )}
+                    {saveStatus === 'error' && (
+                      <span className="auto-save-text error">
+                        <AlertCircle size={11} />
+                        Kayıt hatası
+                      </span>
+                    )}
+                    {saveStatus === 'idle' && hasExisting && (
+                      <span className="auto-save-text synced">
+                        <Check size={11} />
+                        Kayıtlı Tahmin
+                      </span>
+                    )}
+                    {saveStatus === 'idle' && !hasExisting && (homeScore === '' || awayScore === '') && (
+                      <span className="auto-save-text hint">
+                        Skorları girin (otomatik kaydeder)
+                      </span>
+                    )}
+                  </div>
+                </>
               )}
             </div>
           )}
@@ -279,58 +325,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         </div>
       </div>
 
-      {/* 3. ŞIK VE NET "TAHMİNİ KAYDET" BUTONU VE BİLDİRİM ALANI */}
-      {!isFinished && !isLocked && (
-        <div className="match-save-action-bar">
-          <button
-            type="button"
-            className={`btn-save-prediction ${
-              saveStatus === 'saved'
-                ? 'saved'
-                : saveStatus === 'saving'
-                ? 'saving'
-                : isScoreChanged
-                ? 'active-glow'
-                : 'synced'
-            }`}
-            onClick={handleSavePredictionClick}
-            disabled={saveStatus === 'saving'}
-            title={hasExisting ? 'Mevcut tahmini güncelle' : 'Skor tahminini kaydet'}
-          >
-            {saveStatus === 'saving' ? (
-              <>
-                <RefreshCw size={15} className="spinning" />
-                <span>Kaydediliyor...</span>
-              </>
-            ) : saveStatus === 'saved' ? (
-              <>
-                <CheckCircle2 size={16} />
-                <span>Tahmin Kaydedildi!</span>
-              </>
-            ) : (
-              <>
-                <Save size={15} />
-                <span>
-                  {hasExisting
-                    ? isScoreChanged
-                      ? 'Tahmini Güncelle'
-                      : 'Tahmin Kayıtlı (Yeniden Kaydet)'
-                    : 'Tahmini Kaydet'}
-                </span>
-              </>
-            )}
-          </button>
-
-          {/* Toast / Bildirim Rozeti */}
-          {saveFeedbackMsg && (
-            <div className={`save-feedback-toast ${saveStatus === 'saved' ? 'success' : 'error'}`}>
-              {saveStatus === 'saved' ? <CheckCircle2 size={13} /> : <AlertCircle size={13} />}
-              <span>{saveFeedbackMsg}</span>
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Kilitli Maç Uyarısı */}
       {!isFinished && isLocked && (
         <div className="match-locked-notice">
@@ -339,7 +333,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         </div>
       )}
 
-      {/* 4. Biten Maçta Kazanılan Puan Rozeti */}
+      {/* 3. Biten Maçta Kazanılan Puan Rozeti */}
       {isFinished && (
         <div className="finished-points-banner">
           {userPrediction ? (
@@ -373,7 +367,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         </div>
       )}
 
-      {/* 5. Sol Altta Tarih/Saat, Sağ Altta Stadyum Bilgisi */}
+      {/* 4. Sol Altta Tarih/Saat, Sağ Altta Stadyum Bilgisi */}
       <div className="match-card-meta-bottom">
         <div className="meta-item-left" title="Maç Tarihi ve Saati (İstanbul Saati)">
           <Calendar size={13} className="meta-icon" />
@@ -386,7 +380,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         </div>
       </div>
 
-      {/* 6. Biten veya kilitli maçta diğer katılımcıların tahminlerini açıp kapama */}
+      {/* 5. Biten veya kilitli maçta diğer katılımcıların tahminlerini açıp kapama */}
       {(isFinished || isPast) && (
         <div className="all-predictions-accordion">
           <button
