@@ -2323,6 +2323,40 @@ export async function getLeaderboard(): Promise<LeaderboardUser[]> {
   }
 }
 
+/**
+ * 4 - 3 - 2 - 0 Puanlama Kuralı (Sıralı Öncelik Mantığı):
+ * 1. ÖNCELİK: Tam Skor (Exact Match) -> 4 PUAN
+ * 2. ÖNCELİK: Skor / Gol Farkı İsabeti (Goal Difference Match) -> 3 PUAN
+ * 3. ÖNCELİK: Maçın Kazananı / Beraberlik (Outcome Match) -> 2 PUAN
+ * 4. ÖNCELİK: Yanlış Tahmin -> 0 PUAN
+ */
+export function calculatePredictionPoints(
+  predHome: number,
+  predAway: number,
+  realHome: number,
+  realAway: number
+): number {
+  // 1. ÖNCELİK: Tam Skor Bildimi (Exact Match)
+  if (predHome === realHome && predAway === realAway) {
+    return 4;
+  }
+
+  // 2. ÖNCELİK: Skor / Gol Farkı İsabeti (Goal Difference Match)
+  const predDiff = predHome - predAway;
+  const realDiff = realHome - realAway;
+  if (predDiff === realDiff) {
+    return 3;
+  }
+
+  // 3. ÖNCELİK: Maçın Kazananı veya Beraberlik Durumu (Outcome Match)
+  if (Math.sign(predDiff) === Math.sign(realDiff)) {
+    return 2;
+  }
+
+  // 4. Yanlış Tahmin
+  return 0;
+}
+
 // ==========================================
 // YÖNETİCİ İŞLEMLERİ (ADMIN)
 // ==========================================
@@ -2363,14 +2397,12 @@ export async function updateMatchResult(
           Object.keys(allPreds[uid]).forEach((mId) => {
             const p = allPreds[uid][mId];
             if (mId === cleanMatchId) {
-              let pts = 0;
-              if (p.predicted_home_score === realHomeScore && p.predicted_away_score === realAwayScore) {
-                pts = 4;
-              } else if ((p.predicted_home_score - p.predicted_away_score) === (realHomeScore - realAwayScore)) {
-                pts = 3;
-              } else if (Math.sign(p.predicted_home_score - p.predicted_away_score) === Math.sign(realHomeScore - realAwayScore)) {
-                pts = 2;
-              }
+              const pts = calculatePredictionPoints(
+                p.predicted_home_score,
+                p.predicted_away_score,
+                realHomeScore,
+                realAwayScore
+              );
               p.points_earned = pts;
             }
             userSum += (p.points_earned || 0);
@@ -2420,14 +2452,12 @@ export async function updateMatchResult(
 
     if (preds && preds.length > 0) {
       for (const p of preds) {
-        let pts = 0;
-        if (p.predicted_home_score === realHomeScore && p.predicted_away_score === realAwayScore) {
-          pts = 4;
-        } else if ((p.predicted_home_score - p.predicted_away_score) === (realHomeScore - realAwayScore)) {
-          pts = 3;
-        } else if (Math.sign(p.predicted_home_score - p.predicted_away_score) === Math.sign(realHomeScore - realAwayScore)) {
-          pts = 2;
-        }
+        const pts = calculatePredictionPoints(
+          p.predicted_home_score,
+          p.predicted_away_score,
+          realHomeScore,
+          realAwayScore
+        );
         await supabase
           .from('predictions')
           .update({ points_earned: pts })

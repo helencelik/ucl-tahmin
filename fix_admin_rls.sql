@@ -204,16 +204,16 @@ CREATE POLICY "Users can insert predictions before match starts"
         )
     );
 
--- Tahmin güncelleme
 DROP POLICY IF EXISTS "Users can update predictions before match starts" ON public.predictions;
+DROP POLICY IF EXISTS "Admin can update all predictions" ON public.predictions;
 CREATE POLICY "Users can update predictions before match starts"
     ON public.predictions FOR UPDATE
     TO authenticated
     USING (
-        auth.uid() = user_id
-        AND (
-            public.is_admin()
-            OR EXISTS (
+        public.is_admin()
+        OR (
+            auth.uid() = user_id
+            AND EXISTS (
                 SELECT 1 FROM public.matches m
                 WHERE m.id = match_id
                 AND m.status = 'pending'
@@ -239,7 +239,7 @@ GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO authenticated, service_role;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO anon, authenticated, service_role;
 
 
--- 7. OTOMATİK PUAN HESAPLAMA TRİGGER'I ("UPDATE requires a WHERE clause" HATASININ KÖKTEN ÇÖZÜMÜ)
+-- 7. OTOMATİK PUAN HESAPLAMA TRİGGER'I (4 - 3 - 2 - 0 SİSTEMİ)
 CREATE OR REPLACE FUNCTION public.calculate_match_points()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -257,12 +257,17 @@ BEGIN
         FOR pred IN SELECT * FROM public.predictions WHERE match_id = NEW.id LOOP
             v_points := 0;
 
-            -- 1. Tam skor bildiyse 3 Puan
+            -- 1. ÖNCELİK: Tam skor bildiyse 4 Puan (Exact Match)
             IF pred.predicted_home_score = NEW.real_home_score AND pred.predicted_away_score = NEW.real_away_score THEN
+                v_points := 4;
+            -- 2. ÖNCELİK: Skor / Gol farkını doğru bildiyse 3 Puan (Goal Difference Match)
+            -- Örn: Gerçek 4-2, tahmin 2-0 (+2 fark) veya Gerçek 1-1, tahmin 2-2 (0 fark)
+            ELSIF (pred.predicted_home_score - pred.predicted_away_score) = (NEW.real_home_score - NEW.real_away_score) THEN
                 v_points := 3;
-            -- 2. Kazananı veya beraberliği doğru bildiyse 1 Puan
+            -- 3. ÖNCELİK: Maçın kazananını veya beraberliği doğru bildiyse 2 Puan (Outcome Match)
+            -- Örn: Gerçek 2-0 (Ev sahibi), tahmin 3-2 (Ev sahibi)
             ELSIF SIGN(pred.predicted_home_score - pred.predicted_away_score) = SIGN(NEW.real_home_score - NEW.real_away_score) THEN
-                v_points := 1;
+                v_points := 2;
             ELSE
                 v_points := 0;
             END IF;
@@ -275,7 +280,6 @@ BEGIN
         END LOOP;
 
         -- Kullanıcıların toplam puanlarını otomatik olarak yeniden hesaplayıp güncelle
-        -- (safeupdate 'UPDATE requires a WHERE clause' hatasını önlemek için WHERE u.id IS NOT NULL eklendi)
         UPDATE public.users u
         SET total_points = COALESCE((
             SELECT SUM(p.points_earned)
@@ -296,4 +300,43 @@ CREATE TRIGGER trg_calculate_match_points
     ON public.matches
     FOR EACH ROW
     EXECUTE FUNCTION public.calculate_match_points();
+
+
+-- 8. MEVCUT BİTMİŞ MAÇLAR VE TAHMİNLERİ GERİYE DÖNÜK 4-3-2-0 SİSTEMİYLE YENİDEN HESAPLAMA
+DO $$
+DECLARE
+    m RECORD;
+    pred RECORD;
+    v_points INTEGER;
+BEGIN
+    FOR m IN SELECT * FROM public.matches WHERE status = 'finished' AND real_home_score IS NOT NULL AND real_away_score IS NOT NULL LOOP
+        FOR pred IN SELECT * FROM public.predictions WHERE match_id = m.id LOOP
+            v_points := 0;
+            IF pred.predicted_home_score = m.real_home_score AND pred.predicted_away_score = m.real_away_score THEN
+                v_points := 4;
+            ELSIF (pred.predicted_home_score - pred.predicted_away_score) = (m.real_home_score - m.real_away_score) THEN
+                v_points := 3;
+            ELSIF SIGN(pred.predicted_home_score - pred.predicted_away_score) = SIGN(m.real_home_score - m.real_away_score) THEN
+                v_points := 2;
+            ELSE
+                v_points := 0;
+            END IF;
+
+            UPDATE public.predictions
+            SET points_earned = v_points,
+                updated_at = timezone('utc'::text, now())
+            WHERE id = pred.id;
+        END LOOP;
+    END LOOP;
+
+    -- Kullanıcıların toplam puanlarını yenile
+    UPDATE public.users u
+    SET total_points = COALESCE((
+        SELECT SUM(p.points_earned)
+        FROM public.predictions p
+        WHERE p.user_id = u.id
+    ), 0)
+    WHERE u.id IS NOT NULL;
+END;
+$$;
 
