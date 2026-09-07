@@ -8,6 +8,7 @@ import { HomePage } from './pages/HomePage';
 import { PredictionsPage } from './pages/PredictionsPage';
 import { LeaderboardPage } from './pages/LeaderboardPage';
 import { AdminPage } from './pages/AdminPage';
+import { isUserAdmin } from './services/api';
 
 // Import CSS
 import './styles/index.css';
@@ -23,15 +24,8 @@ const MainApp: React.FC = () => {
   const { user, loading } = useAuth();
   const [currentTab, setCurrentTab] = useState<ActiveTab>('home');
 
-  // Rol kontrolü: Admin rolü, kullanıcı adı 'admin' veya admin e-postası
-  const isAdmin = Boolean(
-    user && (
-      user.role === 'admin' ||
-      user.username?.toLowerCase() === 'admin' ||
-      user.email?.toLowerCase().startsWith('admin@') ||
-      user.name?.toLowerCase().includes('yönetici')
-    )
-  );
+  // Rol kontrolü: Admin kontrolü merkezi yardımcı fonksiyon ile sağlanır
+  const isAdmin = isUserAdmin(user);
 
   // Tarayıcı URL yönlendirmesini senkronize etme (Vercel & SPA uyumlu)
   useEffect(() => {

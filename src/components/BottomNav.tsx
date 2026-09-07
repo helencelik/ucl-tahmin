@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import { isUserAdmin } from '../services/api';
 import { Home, Calendar, Trophy, Shield } from 'lucide-react';
 
 interface BottomNavProps {
@@ -38,7 +39,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onSelectTab })
         <span>Lider Tablosu</span>
       </button>
 
-      {user.role?.toLowerCase() === 'admin' && (
+      {isUserAdmin(user) && (
         <button
           className={`bottom-nav-item admin-item ${currentTab === 'admin' ? 'active' : ''}`}
           onClick={() => onSelectTab('admin')}

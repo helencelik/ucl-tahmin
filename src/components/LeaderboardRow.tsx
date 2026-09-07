@@ -70,7 +70,6 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
           <div className="user-primary-line">
             <span className="user-name-title">{displayName}</span>
             {isCurrentUser && <span className="badge-you">Siz</span>}
-            {user.role?.toLowerCase() === 'admin' && <span className="badge-admin">Admin</span>}
           </div>
 
           <div className="user-stats-chips-row">

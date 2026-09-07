@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { LeaderboardUser } from '../types';
-import { getLeaderboard } from '../services/api';
+import { getLeaderboard, isUserAdmin } from '../services/api';
 import { LeaderboardRow } from '../components/LeaderboardRow';
 import {
   Trophy,
@@ -30,7 +30,8 @@ export const LeaderboardPage: React.FC = () => {
 
     try {
       const data = await getLeaderboard();
-      setLeaderboard(data);
+      // Admin kullanıcıların sıralamada yer almadığından emin ol
+      setLeaderboard(data.filter((u) => !isUserAdmin(u)));
     } catch (err) {
       console.error('Liderlik verisi alınamadı:', err);
     } finally {
@@ -43,22 +44,28 @@ export const LeaderboardPage: React.FC = () => {
     fetchLeaderboardData();
   }, []);
 
-  // Filtreleme (Arama)
-  const filteredUsers = leaderboard.filter((u) => {
-    if (!searchQuery.trim()) return true;
-    const q = searchQuery.toLowerCase().trim();
-    const nameStr = (u.display_name || u.name || '').toLowerCase();
-    const usernameStr = (u.username || '').toLowerCase();
-    return nameStr.includes(q) || usernameStr.includes(q);
-  });
+  const isCurrentUserAdmin = isUserAdmin(user);
+
+  // Filtreleme (Adminler kesinlikle liderlik tablosunda yer almaz + Arama)
+  const filteredUsers = leaderboard
+    .filter((u) => !isUserAdmin(u))
+    .filter((u) => {
+      if (!searchQuery.trim()) return true;
+      const q = searchQuery.toLowerCase().trim();
+      const nameStr = (u.display_name || u.name || '').toLowerCase();
+      const usernameStr = (u.username || '').toLowerCase();
+      return nameStr.includes(q) || usernameStr.includes(q);
+    });
 
   const top1 = leaderboard[0];
   const top2 = leaderboard[1];
   const top3 = leaderboard[2];
 
-  // Aktif kullanıcının tablodaki sırası
-  const currentUserEntry = leaderboard.find((u) => u.id === user?.id || (user?.username && u.username === user.username));
-  const currentUserRank = currentUserEntry?.rank || leaderboard.findIndex((u) => u.id === user?.id) + 1;
+  // Aktif kullanıcının tablodaki sırası (Yönetici ise sıralamaya girmez)
+  const currentUserEntry = isCurrentUserAdmin
+    ? undefined
+    : leaderboard.find((u) => u.id === user?.id || (user?.username && u.username === user.username));
+  const currentUserRank = currentUserEntry?.rank || 0;
 
   // En çok tam skor bilen katılımcı
   const maxExactUser = [...leaderboard].sort((a, b) => (b.exact_scores_count || 0) - (a.exact_scores_count || 0))[0];
@@ -121,9 +128,19 @@ export const LeaderboardPage: React.FC = () => {
             <div className="kpi-content">
               <span className="kpi-label">Sizin Sıranız</span>
               <span className="kpi-value-name">
-                {currentUserRank > 0 ? `${currentUserRank}. Sıradasınız` : 'Sıralamada Yok'}
+                {isCurrentUserAdmin
+                  ? 'Yönetici (Yarışma Dışı)'
+                  : currentUserRank > 0
+                  ? `${currentUserRank}. Sıradasınız`
+                  : 'Sıralamada Yok'}
               </span>
-              <span className="kpi-sub">{currentUserEntry ? `${currentUserEntry.total_points} Puan` : '0 Puan'}</span>
+              <span className="kpi-sub">
+                {isCurrentUserAdmin
+                  ? 'Admin hesabı puan tablosuna dahil edilmez'
+                  : currentUserEntry
+                  ? `${currentUserEntry.total_points} Puan`
+                  : '0 Puan'}
+              </span>
             </div>
           </div>
         </section>

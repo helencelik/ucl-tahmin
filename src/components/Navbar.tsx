@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import { isUserAdmin } from '../services/api';
 import { LogOut, Trophy, Shield, Sparkles, User, Home, Calendar } from 'lucide-react';
 
 interface NavbarProps {
@@ -10,7 +11,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
   const { user, logout, isDemo } = useAuth();
 
-  const isAdmin = user?.role?.toLowerCase() === 'admin';
+  const isAdmin = isUserAdmin(user);
 
   return (
     <header className="navbar">

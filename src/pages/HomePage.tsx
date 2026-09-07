@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { getMatches, getUserPredictions, getLeaderboard } from '../services/api';
+import { getMatches, getUserPredictions, getLeaderboard, isUserAdmin } from '../services/api';
 import { Match, Prediction, LeaderboardUser } from '../types';
 import {
   Calendar,
@@ -29,6 +29,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const isCurrentUserAdmin = isUserAdmin(user);
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       setLoading(true);
@@ -41,7 +43,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
         setMatches(matchesData);
         setPredictions(predsData);
-        setLeaderboard(leaderboardData);
+        setLeaderboard(leaderboardData.filter((u) => !isUserAdmin(u)));
       } catch (err) {
         console.error('Ana ekran verileri yüklenirken hata:', err);
       } finally {
@@ -70,9 +72,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   // 4. Toplam puan
   const totalPoints = user?.total_points ?? 0;
 
-  // 5. Genel sıralamadaki yeri (kaçıncı sırada olduğu)
+  // 5. Genel sıralamadaki yeri (Yönetici ise sıralamaya dahil edilmez)
   let userRank: number | null = null;
-  if (user) {
+  if (user && !isCurrentUserAdmin) {
     const idx = leaderboard.findIndex(
       (u) =>
         u.id === user.id ||
@@ -190,10 +192,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </div>
             </div>
             <div className="stat-number gold">
-              {loading ? '-' : userRank ? `${userRank}. Sıra` : '-'}
+              {loading ? '-' : isCurrentUserAdmin ? 'Yönetici' : userRank ? `${userRank}. Sıra` : '-'}
             </div>
             <span className="stat-sub">
-              {leaderboard.length > 0 ? `${leaderboard.length} kişi arasında` : 'Sıralama'}
+              {isCurrentUserAdmin
+                ? 'Yarışma dışı'
+                : leaderboard.length > 0
+                ? `${leaderboard.length} kişi arasında`
+                : 'Sıralama'}
             </span>
           </div>
         </div>

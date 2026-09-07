@@ -227,6 +227,12 @@ export const PredictionsPage: React.FC = () => {
           <div className="match-card-skeleton" />
           <div className="match-card-skeleton" />
         </div>
+      ) : matches.length === 0 ? (
+        <div className="empty-matches-state" style={{ textAlign: 'center', padding: '60px 20px', color: '#8e9bb0' }}>
+          <Calendar size={48} style={{ opacity: 0.4, marginBottom: 12 }} />
+          <p style={{ fontSize: 16, fontWeight: 600, color: '#e2e8f0' }}>Henüz fikstürde maç bulunmuyor.</p>
+          <p style={{ fontSize: 13, opacity: 0.7, marginTop: 4 }}>Yeni maçlar eklendiğinde burada listelenecektir.</p>
+        </div>
       ) : selectedWeek === 'all' ? (
         /* Tüm Haftalar Modu: Hafta hafta bloklar halinde */
         <div className="matchweeks-grouped-list">
