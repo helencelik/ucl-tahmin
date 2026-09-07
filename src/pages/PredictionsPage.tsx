@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Match, Prediction } from '../types';
 import { getMatches, getUserPredictions, saveUserPrediction } from '../services/api';
@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export const PredictionsPage: React.FC = () => {
-  const { user, refreshProfile } = useAuth();
+  const { user } = useAuth();
   const [matches, setMatches] = useState<Match[]>([]);
   const [predictions, setPredictions] = useState<Record<string, Prediction>>({});
 
@@ -25,13 +25,14 @@ export const PredictionsPage: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const loadData = async (isSilent = false) => {
-    if (!isSilent) setLoading(true);
+    // Sadece ilk yüklemede ve maçlar henüz yoksa tam sayfa yükleniyor durumuna al
+    if (!isSilent && matches.length === 0) setLoading(true);
     else setRefreshing(true);
 
     try {
       const [matchesData, predsData] = await Promise.all([
         getMatches(),
-        user ? getUserPredictions(user.id) : Promise.resolve({})
+        user?.id ? getUserPredictions(user.id) : Promise.resolve({})
       ]);
 
       setMatches(matchesData);
@@ -46,17 +47,28 @@ export const PredictionsPage: React.FC = () => {
 
   useEffect(() => {
     loadData();
-  }, [user]);
+  }, [user?.id]);
 
-  const handleSavePrediction = async (matchId: string, homeScore: number, awayScore: number) => {
-    if (!user) return;
+  const handleSavePrediction = useCallback(async (matchId: string, homeScore: number, awayScore: number) => {
+    if (!user?.id) return;
     const saved = await saveUserPrediction(user.id, matchId, homeScore, awayScore);
-    setPredictions((prev) => ({
-      ...prev,
-      [matchId]: saved
-    }));
-    await refreshProfile();
-  };
+    if (saved) {
+      setPredictions((prev) => {
+        const current = prev[matchId];
+        if (
+          current &&
+          current.predicted_home_score === saved.predicted_home_score &&
+          current.predicted_away_score === saved.predicted_away_score
+        ) {
+          return prev;
+        }
+        return {
+          ...prev,
+          [matchId]: saved
+        };
+      });
+    }
+  }, [user?.id]);
 
   // Seçili haftaya göre filtrelenmiş maçlar
   const filteredMatches = matches.filter((m) => {

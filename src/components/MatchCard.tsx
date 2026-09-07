@@ -21,7 +21,7 @@ interface MatchCardProps {
   onSavePrediction: (matchId: string, homeScore: number, awayScore: number) => Promise<void>;
 }
 
-export const MatchCard: React.FC<MatchCardProps> = ({
+const MatchCardComponent: React.FC<MatchCardProps> = ({
   match,
   userPrediction,
   onSavePrediction
@@ -50,11 +50,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({
   const isFinished = match.status === 'finished';
   const isLocked = isPast || isFinished;
 
-  // Dışarıdan gelen tahmin değiştiğinde senkronize et
+  // Dışarıdan gelen tahmin değiştiğinde sadece değer farklıysa senkronize et
   useEffect(() => {
     if (userPrediction) {
-      setHomeScore(String(userPrediction.predicted_home_score));
-      setAwayScore(String(userPrediction.predicted_away_score));
+      const hStr = String(userPrediction.predicted_home_score);
+      const aStr = String(userPrediction.predicted_away_score);
+      setHomeScore((prev) => (prev === hStr ? prev : hStr));
+      setAwayScore((prev) => (prev === aStr ? prev : aStr));
     }
   }, [userPrediction?.predicted_home_score, userPrediction?.predicted_away_score]);
 
@@ -422,3 +424,6 @@ export const MatchCard: React.FC<MatchCardProps> = ({
     </div>
   );
 };
+
+export const MatchCard = React.memo(MatchCardComponent);
+
