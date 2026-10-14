@@ -77,8 +77,8 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
               <span className="user-handle-chip">@{user.username}</span>
             )}
             
-            {/* 1. Toplam Yapılan Tahmin Sayısı (En başta) */}
-            <span className="stat-chip total" title="Kullanıcının Toplam Yaptığı Tahmin Sayısı">
+            {/* 1. Toplam Yapılan Tahmin Sayısı (Sonuçlanmış Maçlar) */}
+            <span className="stat-chip total" title="Sonuçlanmış Maçlara Yapılan Tahmin Sayısı">
               <CheckSquare size={11} />
               <span>{user.predictions_count || 0} Tahmin</span>
             </span>

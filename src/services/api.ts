@@ -246,10 +246,11 @@ export async function getLeaderboard(): Promise<LeaderboardUser[]> {
       return [];
     }
 
-    // 2. Kullanıcıların tahmin istatistiklerini çekme
+    // 2. Kullanıcıların tahmin istatistiklerini çekme (Yalnızca skoru girilmiş / sonuçlanmış maçlar)
     const { data: allPreds } = await supabase
       .from('predictions')
-      .select('user_id, points_earned')
+      .select('user_id, points_earned, match:matches!inner(status)')
+      .eq('match.status', 'finished')
       .limit(10000);
 
     const exactCountMap: Record<string, number> = {};
