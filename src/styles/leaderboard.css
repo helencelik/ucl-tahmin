@@ -744,6 +744,14 @@
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-glass);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.stat-chip.total {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
 }
 
 .stat-chip.exact {

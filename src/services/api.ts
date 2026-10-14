@@ -249,7 +249,8 @@ export async function getLeaderboard(): Promise<LeaderboardUser[]> {
     // 2. Kullanıcıların tahmin istatistiklerini çekme
     const { data: allPreds } = await supabase
       .from('predictions')
-      .select('user_id, points_earned');
+      .select('user_id, points_earned')
+      .limit(10000);
 
     const exactCountMap: Record<string, number> = {};
     const diffCountMap: Record<string, number> = {};

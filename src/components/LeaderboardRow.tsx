@@ -1,6 +1,6 @@
 import React from 'react';
 import { LeaderboardUser } from '../types';
-import { Crown, Medal, User as UserIcon, Award, Target, Sparkles } from 'lucide-react';
+import { Crown, Medal, User as UserIcon, Award, Target, Sparkles, CheckSquare } from 'lucide-react';
 
 interface LeaderboardRowProps {
   user: LeaderboardUser;
@@ -77,11 +77,19 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
               <span className="user-handle-chip">@{user.username}</span>
             )}
             
+            {/* 1. Toplam Yapılan Tahmin Sayısı (En başta) */}
+            <span className="stat-chip total" title="Kullanıcının Toplam Yaptığı Tahmin Sayısı">
+              <CheckSquare size={11} />
+              <span>{user.predictions_count || 0} Tahmin</span>
+            </span>
+
+            {/* 2. Tam Skor Bildimi Sayısı */}
             <span className="stat-chip exact" title="4 Puanlık Tam Skor Tahmin Sayısı">
               <Award size={12} />
               <span>{user.exact_scores_count || 0} Tam</span>
             </span>
 
+            {/* 3. Gol Farkı Bildimi Sayısı */}
             {(user.diff_scores_count !== undefined && user.diff_scores_count > 0) && (
               <span className="stat-chip diff" title="3 Puanlık Gol Farkı Bildimi Sayısı">
                 <Target size={11} />
@@ -89,6 +97,7 @@ export const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
               </span>
             )}
 
+            {/* 4. Maç Sonucu Bildimi Sayısı */}
             {(user.result_scores_count !== undefined && user.result_scores_count > 0) && (
               <span className="stat-chip result" title="2 Puanlık Maç Sonucu Bildimi Sayısı">
                 <Sparkles size={11} />
